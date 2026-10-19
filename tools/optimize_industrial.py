@@ -68,11 +68,28 @@ def remove_skin(m):
     remove=cos<-.91
     if np.count_nonzero(remove)<10 or np.mean(remove)>.45:raise ValueError('unsafe pipe surface')
     return trimesh.Trimesh(vertices=m.vertices,faces=m.faces[~remove],process=False,validate=False)
-def remove_underside(m):
-    b=m.bounds;short=int(np.argmin(b[1]-b[0]))
-    omitted=(m.face_normals[:,short]<-.97)&(m.triangles_center[:,short]<(b[0,short]+b[1,short])/2)
-    if np.mean(omitted)>.55:raise ValueError('unsafe floor')
-    return trimesh.Trimesh(vertices=m.vertices,faces=m.faces[~omitted],process=False,validate=False)
+def remove_profile_cavity(m):
+    """Drop internal longitudinal wall faces; preserve outward profile walls/end rims."""
+    b=m.bounds;ext=b[1]-b[0];axis=int(np.argmax(ext));side=[i for i in range(3) if i!=axis]
+    if ext[axis]/max(ext[side])<3.0:raise ValueError('not slender')
+    center=b.mean(axis=0);facepos=m.triangles_center;normal=m.face_normals
+    radial=facepos[:,side]-center[side];length=np.linalg.norm(radial,axis=1)
+    inward=np.einsum('ij,ij->i',radial,normal[:,side])/np.maximum(length,1e-8)
+    remove=(inward<-.72)&(np.abs(normal[:,axis])<.6)
+    outer=(inward>.72)&(np.abs(normal[:,axis])<.6)
+    if remove.sum()<8 or outer.sum()<8 or remove.sum()>len(remove)*.46:raise ValueError('unsafe cavity')
+    if m.area_faces[remove].sum()>=m.area_faces[outer].sum():raise ValueError('uncertain winding')
+    return trimesh.Trimesh(vertices=m.vertices,faces=m.faces[~remove],process=False,validate=False)
+def remove_thin_sheet_surfaces(m,remove_rim=False):
+    """Strip hidden underside and, on floor only, thin edge thickness walls."""
+    b=m.bounds;ext=b[1]-b[0];short=int(np.argmin(ext));lengths=np.sort(ext)
+    if lengths[0]/max(lengths[1],1e-8)>.065:raise ValueError('not thin sheet')
+    centers=m.triangles_center;normals=m.face_normals
+    bottom=(normals[:,short]<-.96)&(centers[:,short]<(b[0,short]+b[1,short])*.5)
+    rim=(np.abs(normals[:,short])<.75) if remove_rim else np.zeros(len(bottom),dtype=bool)
+    remove=bottom|rim
+    if bottom.sum()<3 or remove.sum()>len(remove)*.85:raise ValueError('unsafe sheet selection')
+    return trimesh.Trimesh(vertices=m.vertices,faces=m.faces[~remove],process=False,validate=False)
 data=gzip.decompress(SRC.read_bytes())
 scene=trimesh.load(trimesh.util.wrap_as_stream(data),file_type='glb',force='scene')
 original_faces=sum(len(g.faces) for g in scene.geometry.values())
@@ -86,7 +103,17 @@ for i,(name,g) in enumerate(list(scene.geometry.items())):
         else:
             if re.match(r'ST - PSHM - HF - (04|12)(\.\d+)?$',name):
                 f=remove_skin(f);actions.append('remove inner cylindrical faces')
-            if name=='New object.010':f=remove_underside(f);actions.append('remove hidden floor underside')
+            if re.fullmatch(r'New object(?:\.\d+)?',name) and name!='New object.010':
+                ext=np.ptp(f.bounds,axis=0);axis=int(np.argmax(ext));side=[j for j in range(3) if j!=axis]
+                if ext[axis]/max(ext[side])>=3.0:
+                    try:
+                        f=remove_profile_cavity(f)
+                        actions.append('remove interior hollow profile walls')
+                    except ValueError as err:
+                        actions.append('profile retained: '+str(err))
+            if name=='New object.010' or re.match(r'^ST - PSHM - HF - (09|11)(\.\d+)?$',name):
+                f=remove_thin_sheet_surfaces(f,remove_rim=(name=='New object.010'))
+                actions.append('strip hidden sheet underside'+(' and floor thickness walls' if name=='New object.010' else ''))
             red=.53 if n0>=6000 else .43 if n0>=2500 else .30 if n0>=1000 else .21 if n0>=600 else .13 if n0>=360 else 0
             if name=='New object.010' or (name.startswith('New object') or name=='Untitled') and n0<1200:red=0
             if n0>=200 and red:
@@ -110,5 +137,5 @@ assert faces<original_faces,(faces,original_faces)
 assert len(validation.graph.nodes_geometry)==len(scene.graph.nodes_geometry)
 assert np.isfinite(validation.bounds).all()
 assert np.abs(validation.bounds-original_bounds).max()<.025
-REPORT.write_text(json.dumps({"triangles_before":original_faces,"triangles_after":faces,"reduction_pct":round(100*(1-faces/original_faces),2),"file_size_bytes":OUT.stat().st_size,"meshes":len(records),"parts":records},ensure_ascii=False,indent=2))
+REPORT.write_text(json.dumps({"triangles_before":original_faces,"triangles_after":faces,"reduction_pct":round(100*(1-faces/original_faces),2),"file_size_bytes":OUT.stat().st_size,"meshes":len(records),"hollow_profiles":sum('remove interior hollow profile walls' in a for _,_,_,acts in records for a in acts),"thin_sheets":sum('strip hidden sheet underside' in a for _,_,_,acts in records for a in acts),"parts":records},ensure_ascii=False,indent=2))
 print("PUBLIC GLB READY",OUT,faces,flush=True)

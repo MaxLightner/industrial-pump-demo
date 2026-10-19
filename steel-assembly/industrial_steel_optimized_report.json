@@ -1,0 +1,1265 @@
+{
+  "triangles_before": 131684,
+  "triangles_after": 75898,
+  "reduction_pct": 42.36,
+  "file_size_bytes": 2662904,
+  "meshes": 184,
+  "parts": [
+    [
+      "Untitled",
+      292,
+      292,
+      []
+    ],
+    [
+      "300-Mirrorproval DN125-M2",
+      3787,
+      2152,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-Mirrorproval DN125-M2.001",
+      3787,
+      2152,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125",
+      9904,
+      4634,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125.001",
+      9904,
+      4634,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125-l",
+      1510,
+      1056,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125-l.001",
+      1510,
+      1056,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125-M",
+      3146,
+      1778,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125-M.001",
+      3146,
+      1778,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125-M11",
+      72,
+      72,
+      []
+    ],
+    [
+      "300-proval DN125-M11.001",
+      72,
+      72,
+      []
+    ],
+    [
+      "300-proval DN125-M11.002",
+      72,
+      72,
+      []
+    ],
+    [
+      "300-proval DN125-M11.003",
+      72,
+      72,
+      []
+    ],
+    [
+      "300-proval DN125-M11.004",
+      72,
+      72,
+      []
+    ],
+    [
+      "300-proval DN125-M11.005",
+      72,
+      72,
+      []
+    ],
+    [
+      "300-proval DN125-M11.006",
+      72,
+      72,
+      []
+    ],
+    [
+      "300-proval DN125-M11.007",
+      72,
+      72,
+      []
+    ],
+    [
+      "300-proval DN125-M2",
+      2879,
+      1638,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125-M2.001",
+      2879,
+      1638,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125-P",
+      406,
+      352,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "300-proval DN125-P.001",
+      406,
+      352,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "conical spring washer 1_din_DIN 6796-10",
+      208,
+      208,
+      []
+    ],
+    [
+      "conical spring washer 1_din_DIN 6796-10.001",
+      208,
+      208,
+      []
+    ],
+    [
+      "conical spring washer 1_din_DIN 6796-10.002",
+      208,
+      208,
+      []
+    ],
+    [
+      "conical spring washer 1_din_DIN 6796-10.003",
+      208,
+      208,
+      []
+    ],
+    [
+      "hex bolt gradeab_din_DIN EN 24014 - M8 x 40 x 22-N",
+      528,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeab_din_DIN EN 24014 - M8 x 40 x 22-N.001",
+      528,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeab_din_DIN EN 24014 - M8 x 40 x 22-N.002",
+      528,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeab_din_DIN EN 24014 - M8 x 40 x 22-N.003",
+      528,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeab_din_DIN EN 24014 - M8 x 40 x 22-N.004",
+      528,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeab_din_DIN EN 24014 - M8 x 40 x 22-N.005",
+      528,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeab_din_DIN EN 24014 - M8 x 40 x 22-N.006",
+      528,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeab_din_DIN EN 24014 - M8 x 40 x 22-N.007",
+      528,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeb_din_DIN EN 24015 - M8 x 30 x 22-S",
+      3212,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeb_din_DIN EN 24015 - M8 x 30 x 22-S.001",
+      3212,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeb_din_DIN EN 24015 - M8 x 30 x 22-S.002",
+      3212,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex bolt gradeb_din_DIN EN 24015 - M8 x 30 x 22-S.003",
+      3212,
+      80,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "hex nut gradec_din_Hexagon Nut ISO 4034 - M10 - N",
+      452,
+      392,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "hex nut gradec_din_Hexagon Nut ISO 4034 - M10 - N.001",
+      452,
+      392,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "hex nut gradec_din_Hexagon Nut ISO 4034 - M10 - N.002",
+      452,
+      392,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "hex nut gradec_din_Hexagon Nut ISO 4034 - M10 - N.003",
+      452,
+      392,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "New object",
+      292,
+      292,
+      []
+    ],
+    [
+      "New object.001",
+      268,
+      268,
+      []
+    ],
+    [
+      "New object.002",
+      832,
+      832,
+      []
+    ],
+    [
+      "New object.003",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.004",
+      294,
+      294,
+      []
+    ],
+    [
+      "New object.005",
+      294,
+      294,
+      []
+    ],
+    [
+      "New object.006",
+      294,
+      294,
+      []
+    ],
+    [
+      "New object.007",
+      292,
+      292,
+      []
+    ],
+    [
+      "New object.008",
+      280,
+      280,
+      []
+    ],
+    [
+      "New object.009",
+      280,
+      280,
+      []
+    ],
+    [
+      "New object.010",
+      52,
+      38,
+      [
+        "remove hidden floor underside"
+      ]
+    ],
+    [
+      "New object.011",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.012",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.013",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.014",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.015",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.016",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.017",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.018",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.019",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.020",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.021",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.022",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.023",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.024",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.025",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.026",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.027",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.028",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.029",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.030",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.031",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.032",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.033",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.034",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.035",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.036",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.037",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.038",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.039",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.040",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.041",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.042",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.043",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.044",
+      832,
+      832,
+      []
+    ],
+    [
+      "New object.045",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.046",
+      832,
+      832,
+      []
+    ],
+    [
+      "New object.047",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.048",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.049",
+      832,
+      832,
+      []
+    ],
+    [
+      "New object.050",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.051",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.052",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.053",
+      294,
+      294,
+      []
+    ],
+    [
+      "New object.054",
+      294,
+      294,
+      []
+    ],
+    [
+      "New object.055",
+      294,
+      294,
+      []
+    ],
+    [
+      "New object.056",
+      292,
+      292,
+      []
+    ],
+    [
+      "New object.057",
+      280,
+      280,
+      []
+    ],
+    [
+      "New object.058",
+      280,
+      280,
+      []
+    ],
+    [
+      "New object.059",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.060",
+      380,
+      380,
+      []
+    ],
+    [
+      "New object.061",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.062",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.063",
+      380,
+      380,
+      []
+    ],
+    [
+      "New object.064",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.065",
+      832,
+      832,
+      []
+    ],
+    [
+      "New object.066",
+      292,
+      292,
+      []
+    ],
+    [
+      "New object.067",
+      292,
+      292,
+      []
+    ],
+    [
+      "New object.068",
+      268,
+      268,
+      []
+    ],
+    [
+      "New object.069",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.070",
+      380,
+      380,
+      []
+    ],
+    [
+      "New object.071",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.072",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.073",
+      380,
+      380,
+      []
+    ],
+    [
+      "New object.074",
+      256,
+      256,
+      []
+    ],
+    [
+      "New object.075",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.076",
+      832,
+      832,
+      []
+    ],
+    [
+      "New object.077",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.078",
+      832,
+      832,
+      []
+    ],
+    [
+      "New object.079",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.080",
+      208,
+      208,
+      []
+    ],
+    [
+      "New object.081",
+      832,
+      832,
+      []
+    ],
+    [
+      "New object.082",
+      208,
+      208,
+      []
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.001",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.002",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.003",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.004",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.005",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.006",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.007",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.008",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.009",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.010",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.011",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.012",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.013",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.014",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.015",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.016",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "socket thin pilot cap screw_din_PreviewCfg.017",
+      860,
+      120,
+      [
+        "threadless low-poly bolt"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 01",
+      832,
+      656,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 01.001",
+      832,
+      656,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 02",
+      416,
+      360,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 02.001",
+      416,
+      360,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 03",
+      832,
+      656,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 03.001",
+      832,
+      656,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 03.002",
+      832,
+      656,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 03.003",
+      832,
+      656,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 04",
+      624,
+      368,
+      [
+        "remove inner cylindrical faces",
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 04.001",
+      624,
+      368,
+      [
+        "remove inner cylindrical faces",
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 06",
+      212,
+      212,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 06.001",
+      212,
+      212,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 07",
+      218,
+      218,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 07.001",
+      218,
+      218,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 08",
+      212,
+      212,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 08.001",
+      212,
+      212,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 08.002",
+      212,
+      212,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 08.003",
+      212,
+      212,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 09",
+      1504,
+      1052,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 09.001",
+      1504,
+      1052,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 09.002",
+      1504,
+      1052,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 09.003",
+      1504,
+      1052,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 10",
+      236,
+      236,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 10.001",
+      236,
+      236,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 11",
+      1072,
+      750,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 11.001",
+      1072,
+      750,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 11.002",
+      1072,
+      750,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 11.003",
+      1072,
+      750,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 12",
+      212,
+      160,
+      [
+        "remove inner cylindrical faces"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 12.001",
+      212,
+      160,
+      [
+        "remove inner cylindrical faces"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 13",
+      872,
+      688,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 13.001",
+      872,
+      688,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 14",
+      656,
+      518,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 14.001",
+      656,
+      518,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 14.002",
+      656,
+      518,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 14.003",
+      656,
+      518,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 15",
+      604,
+      476,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 15.001",
+      604,
+      476,
+      [
+        "quadric simplification"
+      ]
+    ],
+    [
+      "ST - PSHM - HF - 20",
+      324,
+      324,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 20.001",
+      324,
+      324,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 21",
+      28,
+      28,
+      []
+    ],
+    [
+      "ST - PSHM - HF - 21.001",
+      28,
+      28,
+      []
+    ]
+  ]
+}

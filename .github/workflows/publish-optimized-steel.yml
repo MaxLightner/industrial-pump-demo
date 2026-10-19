@@ -1,0 +1,35 @@
+name: Publish optimized steel GLB
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-optimized-steel.yml'
+      - 'tools/optimize_industrial.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  optimize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install mesh optimization libraries
+        run: pip install --disable-pip-version-check numpy trimesh vtk
+      - name: Build and validate optimized GLB
+        run: python tools/optimize_industrial.py
+      - name: Publish GLB in the existing public GitHub Pages repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add steel-assembly/industrial_steel_optimized.glb steel-assembly/industrial_steel_optimized_report.json
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+          else
+            git commit -m "Publish optimized GLB for public download"
+            git push
+          fi

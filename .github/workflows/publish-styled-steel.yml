@@ -1,0 +1,28 @@
+name: Publish styled steel assembly
+on:
+  push:
+    paths:
+      - 'tools/build_styled_steel.py'
+      - '.github/workflows/publish-styled-steel.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install geometry tools
+        run: pip install numpy trimesh
+      - name: Build styled model and verify mesh count
+        run: python tools/build_styled_steel.py
+      - name: Commit generated model
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add steel-assembly/assembly_styled.glb.gz steel-assembly/assembly_styled_report.json
+          if git diff --cached --quiet; then echo 'No changes'; else git commit -m 'Publish styled 186-mesh steel assembly for WebGL'; git push; fi

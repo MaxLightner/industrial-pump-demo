@@ -21,7 +21,7 @@
 </head>
 <body>
 <div id="viewport" aria-label="Interactive stainless steel CAD model"></div>
-<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">PROCESS V4 · 02</div></header>
+<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">BRIGHT STUDIO V5 · 02</div></header>
 <div class="info" aria-hidden="true"><div class="rail"></div><div class="large">02</div><div class="small">ENGINEERED IN METAL</div></div>
 <div class="toolbar" aria-label="Camera controls"><button class="tool" id="plus" type="button" title="Zoom in" aria-label="Zoom in">+</button><button class="tool" id="minus" type="button" title="Zoom out" aria-label="Zoom out">−</button><button class="tool" id="reset" type="button" title="Reset view" aria-label="Reset view"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6M4 4v5h5"/></svg></button><button class="tool" id="fullscreen" type="button" title="Fullscreen" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button></div>
 <footer class="bottom"><div class="spec"><strong>STAINLESS STEEL · STUDIO FINISH</strong><div id="meshCount">Drag to orbit · Scroll to zoom</div></div><div class="controls"><div class="switchline"><button id="ao" class="toggle" type="button" role="switch" aria-checked="false" aria-label="Ambient occlusion"></button><span>Ambient occlusion</span></div><div class="divider"></div><button id="spin" class="action" type="button" aria-pressed="false">Auto rotate</button></div></footer>
@@ -32,15 +32,15 @@ import * as THREE from 'three';
 import { GLTFLoader } from '../GLTFLoader.js';
 import { OrbitControls } from '../OrbitControls.js';
 const el=id=>document.getElementById(id), viewport=el('viewport'), status=el('status'), msg=el('message');
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x506678);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x71889a);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,window.innerWidth<700?1.5:2));
 renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.72;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMappingExposure=1.93;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 viewport.appendChild(renderer.domElement);
 const camera=new THREE.PerspectiveCamera(34,1,.01,1000);
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.055;controls.minPolarAngle=.12;controls.maxPolarAngle=Math.PI-.12;controls.screenSpacePanning=true;
-scene.add(new THREE.AmbientLight(0xeaf3fb,.24));
+scene.add(new THREE.AmbientLight(0xf6fbff,.52));
 const modelGroup=new THREE.Group();scene.add(modelGroup);
 function makeDiamondPlateTextures(){
  const size=256, step=32;
@@ -82,10 +82,10 @@ function studioEnvironment(){
  const pmrem=new THREE.PMREMGenerator(renderer);pmrem.compileCubemapShader();const tex=pmrem.fromScene(studio,.035,.1,40).texture;pmrem.dispose();
  studio.traverse(x=>{if(x.isMesh){x.geometry.dispose();x.material.dispose();}});return tex;
 }
-let envTexture=studioEnvironment();scene.environment=envTexture;scene.environmentIntensity=2.2;
-const key=new THREE.DirectionalLight(0xf7faff,3.4);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.bias=-.00015;key.shadow.normalBias=.015;key.shadow.radius=3;scene.add(key);
-const fill=new THREE.DirectionalLight(0xb8d7f0,2.4);fill.position.set(8,3,-3);scene.add(fill);
-const rim=new THREE.DirectionalLight(0xffffff,1.9);rim.position.set(2,8,-9);scene.add(rim);
+let envTexture=studioEnvironment();scene.environment=envTexture;scene.environmentIntensity=2.6;
+const key=new THREE.DirectionalLight(0xf7faff,4.4);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.bias=-.00015;key.shadow.normalBias=.015;key.shadow.radius=3;scene.add(key);
+const fill=new THREE.DirectionalLight(0xd9ebff,3.25);fill.position.set(8,3,-3);scene.add(fill);
+const rim=new THREE.DirectionalLight(0xffffff,2.35);rim.position.set(2,8,-9);scene.add(rim);
 function transparentPlastic(){
  return new THREE.MeshPhysicalMaterial({color:0xd7f3ff,metalness:0,roughness:.055,transmission:0,transparent:true,opacity:.18,depthWrite:false,depthTest:true,ior:1.49,clearcoat:1,clearcoatRoughness:.04,envMapIntensity:1.5,side:THREE.DoubleSide});
 }

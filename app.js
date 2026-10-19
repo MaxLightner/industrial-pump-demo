@@ -11,8 +11,10 @@ renderer.setPixelRatio(Math.min(devicePixelRatio,window.matchMedia('(max-width:7
 const camera=new T.PerspectiveCamera(38,1,.005,100),controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.075;controls.minDistance=.35;controls.maxDistance=4;controls.maxPolarAngle=Math.PI*.88;controls.autoRotateSpeed=.65;
 const pmrem=new T.PMREMGenerator(renderer),room=new RoomEnvironment(),environment=pmrem.fromScene(room,.04);scene.environment=environment.texture;room.dispose();pmrem.dispose();
 scene.add(new T.HemisphereLight(0xe6f6ff,0x71818a,2));const key=new T.DirectionalLight(0xfff4e1,3);key.position.set(-1.5,3,2);key.castShadow=true;key.shadow.mapSize.set(window.matchMedia('(max-width:760px)').matches?1024:2048,window.matchMedia('(max-width:760px)').matches?1024:2048);Object.assign(key.shadow.camera,{left:-1,right:1,top:1,bottom:-1,near:.1,far:8});key.shadow.bias=-.00015;key.shadow.normalBias=.001;key.shadow.radius=3;scene.add(key);const rim=new T.DirectionalLight(0x8ad8e8,1.4);rim.position.set(1.3,1.8,-2.4);scene.add(rim);const fill=new T.DirectionalLight(0xc7e6ff,1.8);fill.position.set(2,1,-1);scene.add(fill);
-const ground=new T.Mesh(new T.PlaneGeometry(200,200),new T.ShadowMaterial({color:0x163a4b,opacity:.17}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);const grid=new T.GridHelper(4,60,0x8cabbc,0xaec3cf);grid.material.transparent=true;grid.material.opacity=.20;grid.position.y=.0005;scene.add(grid);
-const root=new T.Group();scene.add(root);const parts=[],shellParts=[];let selectedPart=null,isolation=false,rotorPart=null,rotorAngle=0,rotorPivot=new T.Vector3(),mountFrame=null,modelBounds=null,audioContext=null,audioGain=null,audioOscillators=[],audioEnabled=false;let modelCenter=new T.Vector3(0,.16,0),explodeCurrent=0,explodeTarget=0,playing=true,flowPhase=0,speed=1,last=performance.now(),background='studio',ready=false,responsiveFactor=.68;
+const ground=new T.Mesh(new T.PlaneGeometry(200,200),new T.ShadowMaterial({color:0x163a4b,opacity:.17}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);const grid=new T.GridHelper(4,60,0x8cabbc,0xaec3cf);grid.material.transparent=true;grid.material.opacity=.105;grid.position.y=.0005;scene.add(grid);
+const root=new T.Group();scene.add(root);
+// Procedural contact occlusion strengthens depth without heavy post-processing on phones.
+const shadowCanvas=document.createElement('canvas');shadowCanvas.width=128;shadowCanvas.height=128;const shadowCtx=shadowCanvas.getContext('2d');const shadowGradient=shadowCtx.createRadialGradient(64,64,2,64,64,63);shadowGradient.addColorStop(0,'rgba(8,19,27,0.35)');shadowGradient.addColorStop(.35,'rgba(8,19,27,0.20)');shadowGradient.addColorStop(1,'rgba(8,19,27,0)');shadowCtx.fillStyle=shadowGradient;shadowCtx.fillRect(0,0,128,128);const contactMap=new T.CanvasTexture(shadowCanvas);const contactShadow=new T.Mesh(new T.PlaneGeometry(.8,.8),new T.MeshBasicMaterial({map:contactMap,transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1,opacity:.8}));contactShadow.rotation.x=-Math.PI/2;contactShadow.renderOrder=1;scene.add(contactShadow);const parts=[],shellParts=[];let selectedPart=null,isolation=false,rotorPart=null,rotorAngle=0,rotorPivot=new T.Vector3(),mountFrame=null,modelBounds=null,audioContext=null,audioGain=null,audioOscillators=[],audioEnabled=false;let modelCenter=new T.Vector3(0,.16,0),explodeCurrent=0,explodeTarget=0,playing=true,flowPhase=0,speed=1,last=performance.now(),background='studio',ready=false,responsiveFactor=.68;
 const curve=new T.CatmullRomCurve3([new T.Vector3(0,.185,.435),new T.Vector3(0,.185,.31),new T.Vector3(0,.185,.235),new T.Vector3(0,.185,.187),new T.Vector3(-.049,.205,.187),new T.Vector3(-.042,.246,.187),new T.Vector3(.018,.275,.187),new T.Vector3(.073,.277,.187),new T.Vector3(.08,.335,.187),new T.Vector3(.08,.455,.187)],false,'centripetal');
 const flowGroup=new T.Group();root.add(flowGroup);const pathMaterial=new T.MeshBasicMaterial({color:0x20a6bc,transparent:true,opacity:.17,depthTest:false,depthWrite:false});const tube=new T.Mesh(new T.TubeGeometry(curve,150,.0025,6,false),pathMaterial);tube.renderOrder=20;flowGroup.add(tube);
 const particleCount=240;
@@ -36,7 +38,7 @@ function updateCutaway(){
 }
 function resize(){const rect=stage.getBoundingClientRect();if(!rect.width||!rect.height)return;const next=rect.width/rect.height<1.2?1.08:.68;if(next!==responsiveFactor){const delta=camera.position.clone().sub(controls.target).multiplyScalar(next/responsiveFactor);camera.position.copy(controls.target).add(delta);responsiveFactor=next;controls.update();}camera.aspect=rect.width/rect.height;camera.updateProjectionMatrix();renderer.setSize(rect.width,rect.height);}
 new ResizeObserver(resize).observe(stage);
-new GLTFLoader().load('./motor.glb',g=>{const box=new T.Box3().setFromObject(g.scene);modelCenter=box.getCenter(new T.Vector3());const floor=box.min.y-.003;ground.position.y=floor;grid.position.y=floor+.0005;
+new GLTFLoader().load('./motor.glb',g=>{const box=new T.Box3().setFromObject(g.scene);modelCenter=box.getCenter(new T.Vector3());const floor=box.min.y-.003;ground.position.y=floor;grid.position.y=floor+.0005;const modelSize=box.getSize(new T.Vector3());contactShadow.scale.set(Math.max(.6,modelSize.x*1.6),Math.max(.7,modelSize.z*1.55),1);contactShadow.position.set(modelCenter.x,floor+.0015,modelCenter.z);
 g.scene.traverse(mesh=>{if(!mesh.isMesh)return;const index=parseInt(mesh.name.slice(0,3),10);mesh.material=mesh.material.clone();mesh.material.roughness=Math.max(.32,Math.min(.72,mesh.material.roughness??.48));if(mesh.material.metalness!==undefined)mesh.material.metalness=Math.min(.78,Math.max(.05,mesh.material.metalness||.24));mesh.castShadow=true;mesh.receiveShadow=true;const b=new T.Box3().setFromObject(mesh),center=b.getCenter(new T.Vector3());const dir=center.clone().sub(modelCenter);if(dir.length()<.01)dir.set(.1,.1,.1);dir.normalize();let offset=dir.multiplyScalar(.10);if(index>=9&&index<=19){offset=new T.Vector3((center.x)*.2,Math.max(0,center.y-.185)*.4,.12+(index===10?.07:index===11?.13:index===12?.2:0));}else if(index===37){offset.set(0,.055,.065);}else if(index===42||index>=43&&index<=46){offset.set(.04,.20,0);}else if(index>=47){offset.z-=.13;offset.y+=.02;}parts.push({mesh,index,original:mesh.position.clone(),originalQuat:mesh.quaternion.clone(),offset,center:center.clone(),originalEmissive:mesh.material.emissive?mesh.material.emissive.clone():new T.Color(0),originalEmissiveIntensity:mesh.material.emissiveIntensity||1});if([9,10,11,20,23,26,94].includes(index))shellParts.push(mesh);});root.add(g.scene);modelBounds=new T.Box3().setFromObject(g.scene);createMountingFrame(modelBounds);initializeParts();setShellColor('#247b95');ready=true;$('partCount').textContent=parts.length;$('loading').hidden=true;$('status').textContent='مدل آماده است';frame();resize();},undefined,e=>{$('loading').innerHTML='<strong class="error">بارگذاری مدل انجام نشد</strong><small>صفحه را دوباره بارگذاری کنید.</small>';$('status').textContent='خطا در بارگذاری مدل';console.error(e);});
 // On phones, one compact control group is shown at a time while the model remains visible.
 const mobileControls=$('controlsPanel');
@@ -158,13 +160,13 @@ function createMountingFrame(box){
 function applyFrameSetting(){
  const enabled=$('mountingFrame').checked;
  if(mountFrame)mountFrame.visible=enabled;
- if(modelBounds){ground.position.y=modelBounds.min.y-(enabled?.045:.003);grid.position.y=ground.position.y+.0005;}
+ if(modelBounds){ground.position.y=modelBounds.min.y-(enabled?.045:.003);grid.position.y=ground.position.y+.0005;contactShadow.position.y=ground.position.y+.0015;}
 }
 const touchStart={x:0,y:0,down:false,multitouch:false};
-renderer.domElement.addEventListener('pointerdown',e=>{if(e.button!==0)return;touchStart.x=e.clientX;touchStart.y=e.clientY;touchStart.down=true;touchStart.multitouch=!e.isPrimary;});
-renderer.domElement.addEventListener('pointercancel',()=>touchStart.down=false);
+renderer.domElement.addEventListener('pointerdown',e=>{if(e.button!==0)return;if(!e.isPrimary){touchStart.multitouch=true;return;}touchStart.x=e.clientX;touchStart.y=e.clientY;touchStart.down=true;touchStart.multitouch=false;});
+renderer.domElement.addEventListener('pointercancel',()=>{touchStart.down=false;touchStart.multitouch=false;});
 renderer.domElement.addEventListener('pointerup',e=>{
- if(!touchStart.down||!e.isPrimary||!ready||Math.hypot(e.clientX-touchStart.x,e.clientY-touchStart.y)>7)return;
+ if(!touchStart.down||touchStart.multitouch||!e.isPrimary||!ready||Math.hypot(e.clientX-touchStart.x,e.clientY-touchStart.y)>7)return;
  touchStart.down=false;
  const rect=renderer.domElement.getBoundingClientRect();pointer.set((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1);
  raycaster.setFromCamera(pointer,camera);
@@ -189,7 +191,7 @@ function updateRotorStatus(){
 }
 function syncAudio(){
  if(!audioContext||!audioGain)return;
- const target=audioEnabled&&playing?.035:0;
+ const target=(audioEnabled&&playing)?0.035:0;
  audioGain.gain.setTargetAtTime(target,audioContext.currentTime,.065);
  for(const [i,osc] of audioOscillators.entries())osc.frequency.setTargetAtTime((i===0?72:144)*Math.max(.35,speed),audioContext.currentTime,.08);
  $('soundToggle').classList.toggle('is-active',audioEnabled);

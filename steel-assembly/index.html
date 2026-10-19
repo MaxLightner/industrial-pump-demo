@@ -21,7 +21,7 @@
 </head>
 <body>
 <div id="viewport" aria-label="Interactive stainless steel CAD model"></div>
-<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">MILK POWDER V7 · 186 CAD MESHES</div></header>
+<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">MILK POWDER V8 · 186 CAD MESHES</div></header>
 <div class="info" aria-hidden="true"><div class="rail"></div><div class="large">02</div><div class="small">ENGINEERED IN METAL</div></div>
 <div class="toolbar" aria-label="Camera controls"><button class="tool" id="plus" type="button" title="Zoom in" aria-label="Zoom in">+</button><button class="tool" id="minus" type="button" title="Zoom out" aria-label="Zoom out">−</button><button class="tool" id="reset" type="button" title="Reset view" aria-label="Reset view"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6M4 4v5h5"/></svg></button><button class="tool" id="fullscreen" type="button" title="Fullscreen" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button></div>
 <footer class="bottom"><div class="spec"><strong>STAINLESS STEEL · STUDIO FINISH</strong><div id="meshCount">Drag to orbit · Scroll to zoom</div></div><div class="controls"><div class="switchline"><button id="ao" class="toggle" type="button" role="switch" aria-checked="false" aria-label="Ambient occlusion"></button><span>Ambient occlusion</span></div><div class="divider"></div><button id="spin" class="action" type="button" aria-pressed="false">Auto rotate</button></div></footer>
@@ -87,7 +87,7 @@ const key=new THREE.DirectionalLight(0xf7faff,4.4);key.position.set(-5,10,7);key
 const fill=new THREE.DirectionalLight(0xd9ebff,3.25);fill.position.set(8,3,-3);scene.add(fill);
 const rim=new THREE.DirectionalLight(0xffffff,2.35);rim.position.set(2,8,-9);scene.add(rim);
 function transparentPlastic(){
- return new THREE.MeshPhysicalMaterial({color:0xd7f3ff,metalness:0,roughness:.055,transmission:0,transparent:true,opacity:.18,depthWrite:false,depthTest:true,ior:1.49,clearcoat:1,clearcoatRoughness:.04,envMapIntensity:1.5,side:THREE.DoubleSide});
+ return new THREE.MeshPhysicalMaterial({color:0xc6eaf7,metalness:0,roughness:.055,transmission:0,transparent:true,opacity:.34,depthWrite:false,depthTest:true,ior:1.49,clearcoat:1,clearcoatRoughness:.035,envMapIntensity:1.65,side:THREE.DoubleSide});
 }
 function polishedRailMaterial(){return new THREE.MeshPhysicalMaterial({color:0xf1f6f8,metalness:1,roughness:.08,envMapIntensity:2.35,clearcoat:.28,clearcoatRoughness:.08});}
 function trayPlateMaterial(){return new THREE.MeshStandardMaterial({map:plateMaps.color,normalMap:plateMaps.normal,normalScale:new THREE.Vector2(.85,.85),roughnessMap:plateMaps.rough,roughness:.52,metalness:.83,envMapIntensity:1.6,color:0xe1e9ed});}
@@ -248,7 +248,7 @@ function loadUrl(url){status.hidden=false;status.querySelector('strong').textCon
 async function loadPacked(){
  status.hidden=false;status.querySelector('strong').textContent='PREPARING 3D SCENE';msg.textContent='Loading compressed CAD assembly...';el('progress').hidden=false;el('localUpload').hidden=true;
  try {
-  const response=await fetch('./assembly_styled.glb.gz?v=7');
+  const response=await fetch('./assembly_styled.glb.gz?v=8');
   if(!response.ok)throw Error('CAD download failed (HTTP '+response.status+')');
   let bytes=await response.arrayBuffer();
   const magic=new Uint8Array(bytes);

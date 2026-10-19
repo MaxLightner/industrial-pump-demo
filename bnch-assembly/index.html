@@ -107,7 +107,7 @@ async function loadPacked(){
  try{
   const resp=await fetch('./model.pack.txt');
   if(!resp.ok)throw Error('Model data not available: HTTP '+resp.status);
-  const str=(await resp.text()).replace(/\\s/g,'');
+  const str=(await resp.text()).replace(/\s/g,'');
   const packed=Uint8Array.from(atob(str),ch=>ch.charCodeAt(0));
   if(typeof DecompressionStream!=='function')throw Error('This browser cannot decompress the model');
   const buffer=await new Response(new Blob([packed]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();

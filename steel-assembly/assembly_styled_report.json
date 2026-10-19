@@ -1,0 +1,15 @@
+{
+  "total_meshes": 186,
+  "triangles": 70638,
+  "gzipped_bytes": 923966,
+  "counts": {
+    "rail": 83,
+    "orange": 4,
+    "brushed_valve": 16,
+    "steel": 76,
+    "floor": 1,
+    "plastic": 4
+  },
+  "powder_inserts_from_user_model": 2,
+  "geometry_source": "optimized CAD already hosted in repository plus original uploaded upper hopper powder geometries"
+}

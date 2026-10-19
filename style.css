@@ -85,3 +85,115 @@
  #controlsPanel .mobile-tabs{height:52px;flex-basis:52px}
  .transport{flex-basis:43px;margin-top:4px}
 }
+
+
+/* Industrial viewer V2: refined equipment showroom and production-facing controls */
+[hidden]{display:none!important}
+html,body{background:#0b151e;color:#e2edf2}
+header{background:linear-gradient(105deg,#122a35,#111e2a 65%,#142831);border-bottom-color:#315461}
+.brand-icon{color:#47d3cd;text-shadow:0 0 22px #24c6bc55}
+.brand h1{font-weight:650;letter-spacing:0;color:#f0f7f9}
+.brand p{letter-spacing:.35px;color:#b0c2cb}
+.header-cta{display:flex;gap:9px}
+.header-cta button{color:#c1d0d6;background:#233844;border:1px solid #456170;border-radius:8px;white-space:nowrap;padding:10px 11px;font-size:11px;cursor:not-allowed;opacity:.77}
+.header-cta button:first-child{background:#11554f;border-color:#28766b}
+.header-cta small{font-size:9px;color:#8eacb6;padding-inline-start:6px}
+.stage{border-color:#486471;box-shadow:0 8px 30px #02090f28}
+.stage-label{border-radius:9px;box-shadow:0 3px 12px #15263120}
+.view-tools button{border-radius:8px}
+.view-tools button:active{transform:scale(.96)}
+.pick-hud{position:absolute;right:16px;bottom:58px;z-index:4;display:flex;flex-direction:column;gap:6px;max-width:min(320px,62%);background:#122d39ee;color:#e9f9f8;border:1px solid #23857d;border-radius:13px;padding:11px 13px;box-shadow:0 10px 35px #07233155;backdrop-filter:blur(13px)}
+.pick-hud strong{font-size:13px;overflow-wrap:anywhere}
+.pick-hud span{font-size:10px;color:#a1cad1}
+.pick-hud-actions{display:flex;flex-wrap:wrap;gap:5px}
+.pick-hud-actions button{border:1px solid #396b72;background:#204954;color:#e1f4f5;border-radius:7px;padding:7px 9px;font-size:10px}
+.pick-hud-actions button:hover{background:#2f6469}
+.pick-hud-actions button:last-child{font-size:16px;min-width:26px;padding:4px}
+.sound-button{display:flex;align-items:center;gap:5px;border:1px solid #47646e;background:#233a46;color:#b6d1d6;border-radius:8px;padding:10px;white-space:nowrap;font-size:13px}
+.sound-button span{font-size:11px}
+.sound-button.is-active{border-color:#2ab9aa;background:#16534e;color:#d4fff3}
+.transport{border-radius:9px;background:linear-gradient(90deg,#172d38,#1c3643)}
+.transport .text-button{border:1px solid transparent;border-radius:7px;padding:9px}
+.transport .text-button:hover{border-color:#44626f}
+.inspection-summary{display:flex;flex-direction:column;gap:5px;border:1px solid #355260;border-radius:9px;padding:10px;background:linear-gradient(120deg,#1b3a48,#172d3b)}
+.inspection-summary strong{font-size:12px;line-height:1.4}
+.inspection-summary span{font-size:10px;color:#8cacbc;line-height:1.5}
+.inspector-actions{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0}
+.inspector-actions button,.rotor-row button,.assembly-steps button{font-size:10px;color:#c9e7e7;border:1px solid #36616b;background:#20444d;border-radius:8px;padding:8px 9px}
+.inspector-actions button:hover:not(:disabled),.rotor-row button:hover:not(:disabled){background:#22645f}
+.inspector-actions button:disabled,.rotor-row button:disabled,.assembly-steps button:disabled{opacity:.42;cursor:not-allowed}
+.inspector-actions #isolatePart{background:#0d615a;border-color:#17887c;color:#e3fff7}
+.rotor-row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-bottom:9px}
+.rotor-row span{font-size:9px;color:#8daeb9;overflow-wrap:anywhere;max-width:50%}
+.parts-search{width:100%;padding:9px 11px;border:1px solid #466676;background:#0c202e;color:#e8f7f8;border-radius:9px;outline:none;font-size:11px}
+.parts-search:focus{border-color:#2fc9b5}
+.parts-list{margin-top:8px;border:1px solid #365363;border-radius:10px;background:#0e2330;max-height:192px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#416977 transparent}
+.part-list-item{display:flex;gap:10px;align-items:center;text-align:start;width:100%;padding:9px 10px;color:#aec6d0;border:0;border-bottom:1px solid #294453;background:transparent;font-size:11px;line-height:1.4}
+.part-list-item:hover{background:#21414d;color:#fff}
+.part-list-item.selected{color:#9cf2e5;background:#174943;box-shadow:inset 3px 0 #30c6b4}
+.part-dot{width:18px;text-align:center;color:#5ec3ba;font-size:16px}
+.parts-placeholder{display:block;color:#8ba8b6;padding:13px;font-size:11px}
+.secondary-options{margin-top:9px;padding:8px 10px;border:1px solid #2d4755;border-radius:8px;color:#8fb8c1;font-size:11px}
+.secondary-options summary{cursor:pointer;user-select:none}
+.secondary-options .color-row{padding:9px 0}
+.secondary-options output{color:#9fb8bf}
+.assembly-steps{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:5px 0 12px;background:#102835;border:1px solid #355769;border-radius:10px;padding:7px}
+.assembly-steps button{flex-shrink:0;width:38px;height:38px;font-size:21px}
+.assembly-label{flex:1;min-width:0;text-align:center;display:flex;flex-direction:column;gap:4px}
+.assembly-label strong{font-size:12px}
+.assembly-label span{font-size:9px;color:#97b7c3;line-height:1.6}
+.step-markers{display:flex;justify-content:space-between;gap:3px;font-size:9px;color:#8cabb5;margin:5px 0 13px;text-align:center}
+.engineering-note{font-size:10px;line-height:1.75;color:#8ba7b6;border-right:2px solid #3f7a80;padding-right:8px}
+.legacy-hidden{display:none}
+.flow-facts{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.fact-item{font-size:10px;color:#9ed4d1;background:#193e49;border:1px solid #2b636a;border-radius:7px;padding:7px}
+#controlsPanel{scrollbar-width:thin}
+#controlsPanel .inspector-section{min-height:0}
+@media(max-width:760px){
+ header{gap:4px}
+ .brand-icon{display:none}
+ .brand{min-width:0;flex:1}
+ .brand h1{font-size:clamp(12px,3.4vw,16px);line-height:1.25;letter-spacing:-.3px}
+ .brand p{font-size:clamp(8px,2vw,10px);line-height:1.2}
+ .header-meta{display:flex;flex:0 0 auto;align-items:center}
+ .header-meta .mono{display:none}
+ .header-cta{gap:4px}
+ .header-cta button{border-radius:6px;padding:6px 5px;font-size:9px;max-width:78px;white-space:normal;line-height:1.2}
+ .header-cta small{display:block;font-size:8px;padding:2px 0 0}
+ .stage{border-radius:11px}
+ .pick-hud{right:8px;left:auto;bottom:44px;max-width:min(240px,67vw);gap:3px;padding:8px 9px;border-radius:9px}
+ .pick-hud strong{font-size:11px}
+ .pick-hud span{font-size:9px}
+ .pick-hud-actions button{font-size:9px;padding:6px}
+ .sound-button{font-size:12px;padding:7px 8px}
+ .sound-button span{font-size:10px}
+ .transport .text-button{padding:6px 2px;font-size:10px}
+ #controlsPanel .mobile-tabs{box-shadow:0 -3px 10px #00000018}
+ #controlsPanel .control-section.is-mobile-active{max-height:min(30dvh,204px)}
+ #controlsPanel .inspection-summary{padding:7px}
+ #controlsPanel .inspection-summary span{font-size:9px}
+ #controlsPanel .inspector-actions{margin:5px 0}
+ #controlsPanel .inspector-actions button,#controlsPanel .rotor-row button{font-size:9px;padding:6px}
+ #controlsPanel .rotor-row{margin-bottom:4px}
+ #controlsPanel .rotor-row span{font-size:9px}
+ #controlsPanel .parts-search{padding:7px;font-size:10px}
+ #controlsPanel .parts-list{max-height:92px;min-height:55px;margin-top:5px}
+ #controlsPanel .part-list-item{font-size:10px;padding:7px}
+ #controlsPanel .secondary-options{margin:6px 0 0}
+ #controlsPanel .assembly-steps{padding:5px;margin:4px 0 7px}
+ #controlsPanel .assembly-steps button{width:32px;height:32px}
+ #controlsPanel .assembly-label strong{font-size:11px}
+ #controlsPanel .assembly-label span{font-size:9px}
+ #controlsPanel .step-markers{font-size:8px;margin:0 0 5px}
+ #controlsPanel .engineering-note{font-size:9px;line-height:1.4;margin:6px 0}
+ #controlsPanel .flow-facts{margin:4px 0}
+ #controlsPanel .fact-item{font-size:9px;padding:5px}
+}
+@media(max-width:380px){
+ .header-cta button{font-size:8px;max-width:66px}
+ .brand p{font-size:8px}
+ .brand h1{font-size:12px}
+ .transport-caption strong{font-size:10px}
+ .sound-button{padding:6px 5px}
+}
+@media(prefers-reduced-motion:reduce){.pick-hud{backdrop-filter:none}}

@@ -1,9 +1,11 @@
 {
   "triangles_before": 131684,
-  "triangles_after": 75898,
-  "reduction_pct": 42.36,
-  "file_size_bytes": 2662904,
+  "triangles_after": 70046,
+  "reduction_pct": 46.81,
+  "file_size_bytes": 2400944,
   "meshes": 184,
+  "hollow_profiles": 65,
+  "thin_sheets": 9,
   "parts": [
     [
       "Untitled",
@@ -328,250 +330,330 @@
     [
       "New object.003",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.004",
       294,
-      294,
-      []
+      195,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.005",
       294,
-      294,
-      []
+      195,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.006",
       294,
-      294,
-      []
+      195,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.007",
       292,
-      292,
-      []
+      194,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.008",
       280,
-      280,
-      []
+      158,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.009",
       280,
-      280,
-      []
+      158,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.010",
       52,
-      38,
+      14,
       [
-        "remove hidden floor underside"
+        "strip hidden sheet underside and floor thickness walls"
       ]
     ],
     [
       "New object.011",
       256,
-      256,
-      []
+      212,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.012",
       256,
-      256,
-      []
+      212,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.013",
       256,
-      256,
-      []
+      212,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.014",
       256,
-      256,
-      []
+      212,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.015",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.016",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.017",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.018",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.019",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.020",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.021",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.022",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.023",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.024",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.025",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.026",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.027",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.028",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.029",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.030",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.031",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.032",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.033",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.034",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.035",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.036",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.037",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.038",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.039",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.040",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.041",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.042",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.043",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.044",
@@ -582,8 +664,10 @@
     [
       "New object.045",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.046",
@@ -594,14 +678,18 @@
     [
       "New object.047",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.048",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.049",
@@ -612,68 +700,90 @@
     [
       "New object.050",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.051",
       256,
-      256,
-      []
+      208,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.052",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.053",
       294,
-      294,
-      []
+      195,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.054",
       294,
-      294,
-      []
+      195,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.055",
       294,
-      294,
-      []
+      195,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.056",
       292,
-      292,
-      []
+      194,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.057",
       280,
-      280,
-      []
+      158,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.058",
       280,
-      280,
-      []
+      158,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.059",
       256,
-      256,
-      []
+      194,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.060",
       380,
-      380,
-      []
+      318,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.061",
@@ -684,14 +794,18 @@
     [
       "New object.062",
       256,
-      256,
-      []
+      194,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.063",
       380,
-      380,
-      []
+      318,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.064",
@@ -726,14 +840,18 @@
     [
       "New object.069",
       256,
-      256,
-      []
+      194,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.070",
       380,
-      380,
-      []
+      318,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.071",
@@ -744,14 +862,18 @@
     [
       "New object.072",
       256,
-      256,
-      []
+      194,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.073",
       380,
-      380,
-      []
+      318,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.074",
@@ -762,8 +884,10 @@
     [
       "New object.075",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.076",
@@ -774,8 +898,10 @@
     [
       "New object.077",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.078",
@@ -786,14 +912,18 @@
     [
       "New object.079",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.080",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "New object.081",
@@ -804,8 +934,10 @@
     [
       "New object.082",
       208,
-      208,
-      []
+      156,
+      [
+        "remove interior hollow profile walls"
+      ]
     ],
     [
       "socket thin pilot cap screw_din_PreviewCfg",
@@ -1084,32 +1216,36 @@
     [
       "ST - PSHM - HF - 09",
       1504,
-      1052,
+      781,
       [
+        "strip hidden sheet underside",
         "quadric simplification"
       ]
     ],
     [
       "ST - PSHM - HF - 09.001",
       1504,
-      1052,
+      781,
       [
+        "strip hidden sheet underside",
         "quadric simplification"
       ]
     ],
     [
       "ST - PSHM - HF - 09.002",
       1504,
-      1052,
+      780,
       [
+        "strip hidden sheet underside",
         "quadric simplification"
       ]
     ],
     [
       "ST - PSHM - HF - 09.003",
       1504,
-      1052,
+      780,
       [
+        "strip hidden sheet underside",
         "quadric simplification"
       ]
     ],
@@ -1128,32 +1264,36 @@
     [
       "ST - PSHM - HF - 11",
       1072,
-      750,
+      556,
       [
+        "strip hidden sheet underside",
         "quadric simplification"
       ]
     ],
     [
       "ST - PSHM - HF - 11.001",
       1072,
-      750,
+      556,
       [
+        "strip hidden sheet underside",
         "quadric simplification"
       ]
     ],
     [
       "ST - PSHM - HF - 11.002",
       1072,
-      750,
+      556,
       [
+        "strip hidden sheet underside",
         "quadric simplification"
       ]
     ],
     [
       "ST - PSHM - HF - 11.003",
       1072,
-      750,
+      556,
       [
+        "strip hidden sheet underside",
         "quadric simplification"
       ]
     ],

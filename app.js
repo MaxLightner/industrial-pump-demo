@@ -62,6 +62,27 @@ setMobilePanel('');
 
 
 /* Industrial inspection tools: use actual GLB nodes and neutral identifiers where metadata is absent. */
+
+const viewerModeButtons=[...document.querySelectorAll('[data-mode]')];
+function setViewerMode(mode){
+ viewerModeButtons.forEach(button=>{
+  const active=button.dataset.mode===mode;
+  button.classList.toggle('selected',active);
+  button.setAttribute('aria-pressed',String(active));
+ });
+ if(mode==='showcase'){
+  if(selectedPart)clearSelection();
+  setAssemblyStep(0);
+  $('autoRotate').checked=true;controls.autoRotate=true;
+  setMobilePanel('');frame('perspective');
+ }else{
+  $('autoRotate').checked=false;controls.autoRotate=false;
+  if(mode==='assembly'){setMobilePanel('assembly');if(Number($('assemblyStep').value)===0)setAssemblyStep(1);}
+  if(mode==='inspection')setMobilePanel('shell');
+ }
+}
+viewerModeButtons.forEach(button=>button.addEventListener('click',()=>setViewerMode(button.dataset.mode)));
+
 const raycaster=new T.Raycaster(),pointer=new T.Vector2();
 const sectionLabels={0:'مونتاژ کامل',1:'جداسازی پوسته',2:'بررسی اجزای داخلی',3:'جداسازی محرک',4:'نمای قطعات بازشده'};
 const sectionNotes={0:'مجموعه در وضعیت بسته',1:'پوسته و پوشش‌ها به‌صورت نمایشی جدا می‌شوند',2:'گروه اجزای میانی برای بازرسی باز می‌شود',3:'مجموعه محرک و قطعات عقب جدا می‌شوند',4:'همه گروه‌ها در نمای انفجاری نمایش داده می‌شوند'};

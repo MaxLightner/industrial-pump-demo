@@ -21,10 +21,10 @@
 </head>
 <body>
 <div id="viewport" aria-label="Interactive stainless steel CAD model"></div>
-<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">3D SHOWCASE — 02</div></header>
+<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">PROCESS V4 · 02</div></header>
 <div class="info" aria-hidden="true"><div class="rail"></div><div class="large">02</div><div class="small">ENGINEERED IN METAL</div></div>
 <div class="toolbar" aria-label="Camera controls"><button class="tool" id="plus" type="button" title="Zoom in" aria-label="Zoom in">+</button><button class="tool" id="minus" type="button" title="Zoom out" aria-label="Zoom out">−</button><button class="tool" id="reset" type="button" title="Reset view" aria-label="Reset view"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6M4 4v5h5"/></svg></button><button class="tool" id="fullscreen" type="button" title="Fullscreen" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button></div>
-<footer class="bottom"><div class="spec"><strong>STAINLESS STEEL · STUDIO FINISH</strong><div id="meshCount">Drag to orbit · Scroll to zoom</div></div><div class="controls"><div class="switchline"><button id="ao" class="toggle" type="button" role="switch" aria-checked="true" aria-label="Ambient occlusion"></button><span>Ambient occlusion</span></div><div class="divider"></div><button id="spin" class="action" type="button" aria-pressed="false">Auto rotate</button></div></footer>
+<footer class="bottom"><div class="spec"><strong>STAINLESS STEEL · STUDIO FINISH</strong><div id="meshCount">Drag to orbit · Scroll to zoom</div></div><div class="controls"><div class="switchline"><button id="ao" class="toggle" type="button" role="switch" aria-checked="false" aria-label="Ambient occlusion"></button><span>Ambient occlusion</span></div><div class="divider"></div><button id="spin" class="action" type="button" aria-pressed="false">Auto rotate</button></div></footer>
 <div id="status" role="status" aria-live="polite"><strong>PREPARING 3D SCENE</strong><p id="message">Loading polished steel assembly...</p><div class="bar" id="progress"><i></i></div><label class="upload" id="localUpload" hidden>Open local GLB<input type="file" id="modelFile" accept=".glb,model/gltf-binary"></label></div>
 <div class="dropzone" id="dropzone"></div>
 <script type="module">
@@ -32,11 +32,11 @@ import * as THREE from 'three';
 import { GLTFLoader } from '../GLTFLoader.js';
 import { OrbitControls } from '../OrbitControls.js';
 const el=id=>document.getElementById(id), viewport=el('viewport'), status=el('status'), msg=el('message');
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x223543);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x506678);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,window.innerWidth<700?1.5:2));
 renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.56;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMappingExposure=1.72;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 viewport.appendChild(renderer.domElement);
 const camera=new THREE.PerspectiveCamera(34,1,.01,1000);
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.055;controls.minPolarAngle=.12;controls.maxPolarAngle=Math.PI-.12;controls.screenSpacePanning=true;
@@ -55,7 +55,12 @@ function makeDiamondPlateTextures(){
  const drawDiamond=(ctx,x,y,fill,shadow)=>{ctx.save();ctx.translate(x,y);ctx.rotate(-Math.PI/4);ctx.fillStyle=fill;ctx.fillRect(-11,-4,22,8);ctx.fillStyle=shadow;ctx.fillRect(-11,0,22,4);ctx.restore();};
  for(let y=16;y<size+16;y+=step){for(let x=16;x<size+16;x+=step){drawDiamond(cc,x,y,'rgba(227,236,241,.86)','rgba(110,126,138,.62)');drawDiamond(rc,x,y,'rgb(170,170,170)','rgb(95,95,95)');drawDiamond(bc,x,y,'rgb(156,156,255)','rgb(100,100,255)');}}
  const buildTex=(canvas)=>{const tex=new THREE.CanvasTexture(canvas);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(6,6);tex.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return tex;};
- return {color:buildTex(colorCanvas), bump:buildTex(roughCanvas), rough:buildTex(roughCanvas)};
+ const rgba=rc.getImageData(0,0,size,size).data,ndata=cc.createImageData(size,size),out=ndata.data;
+ const h=(x,y)=>rgba[4*((((y%size)+size)%size)*size+(((x%size)+size)%size))]/255;
+ for(let y=0;y<size;y++){for(let x=0;x<size;x++){const dx=(h(x-1,y)-h(x+1,y))*1.8,dy=(h(x,y-1)-h(x,y+1))*1.8;
+ const norm=1/Math.sqrt(dx*dx+dy*dy+1),idx=4*(y*size+x);out[idx]=Math.round(128+dx*norm*127);out[idx+1]=Math.round(128+dy*norm*127);out[idx+2]=Math.round(128+norm*127);out[idx+3]=255;}}
+ const normalCanvas=document.createElement('canvas');normalCanvas.width=normalCanvas.height=size;normalCanvas.getContext('2d').putImageData(ndata,0,0);
+ return {color:buildTex(colorCanvas), normal:buildTex(normalCanvas), rough:buildTex(roughCanvas)};
 }
 const plateMaps=makeDiamondPlateTextures();
 const shadowPlane=new THREE.Mesh(new THREE.PlaneGeometry(26,26),new THREE.ShadowMaterial({color:0x02060a,opacity:.12}));shadowPlane.rotation.x=-Math.PI/2;shadowPlane.receiveShadow=true;scene.add(shadowPlane);
@@ -77,15 +82,25 @@ function studioEnvironment(){
  const pmrem=new THREE.PMREMGenerator(renderer);pmrem.compileCubemapShader();const tex=pmrem.fromScene(studio,.035,.1,40).texture;pmrem.dispose();
  studio.traverse(x=>{if(x.isMesh){x.geometry.dispose();x.material.dispose();}});return tex;
 }
-let envTexture=studioEnvironment();scene.environment=envTexture;scene.environmentIntensity=1.95;
+let envTexture=studioEnvironment();scene.environment=envTexture;scene.environmentIntensity=2.2;
 const key=new THREE.DirectionalLight(0xf7faff,3.4);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.bias=-.00015;key.shadow.normalBias=.015;key.shadow.radius=3;scene.add(key);
 const fill=new THREE.DirectionalLight(0xb8d7f0,2.4);fill.position.set(8,3,-3);scene.add(fill);
 const rim=new THREE.DirectionalLight(0xffffff,1.9);rim.position.set(2,8,-9);scene.add(rim);
 function transparentPlastic(){
- return new THREE.MeshPhysicalMaterial({color:0xf7fcff,metalness:0,roughness:.035,transmission:.84,transparent:true,opacity:.23,depthWrite:false,thickness:.08,ior:1.49,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:1.45,side:THREE.DoubleSide});
+ return new THREE.MeshPhysicalMaterial({color:0xd7f3ff,metalness:0,roughness:.055,transmission:0,transparent:true,opacity:.18,depthWrite:false,depthTest:true,ior:1.49,clearcoat:1,clearcoatRoughness:.04,envMapIntensity:1.5,side:THREE.DoubleSide});
 }
 function polishedRailMaterial(){return new THREE.MeshPhysicalMaterial({color:0xf1f6f8,metalness:1,roughness:.08,envMapIntensity:2.35,clearcoat:.28,clearcoatRoughness:.08});}
-function trayPlateMaterial(){return new THREE.MeshStandardMaterial({map:plateMaps.color,bumpMap:plateMaps.bump,bumpScale:.08,roughnessMap:plateMaps.rough,roughness:.58,metalness:.86,envMapIntensity:1.55,color:0xd6dde2});}
+function trayPlateMaterial(){return new THREE.MeshStandardMaterial({map:plateMaps.color,normalMap:plateMaps.normal,normalScale:new THREE.Vector2(.85,.85),roughnessMap:plateMaps.rough,roughness:.52,metalness:.83,envMapIntensity:1.6,color:0xe1e9ed});}
+function buildTrayUV(mesh){
+ const geo=mesh.geometry, pos=geo.getAttribute('position');
+ if(!pos)throw Error('The original base plate has no geometry');
+ geo.computeBoundingBox();const b=geo.boundingBox;
+ const size=[b.max.x-b.min.x,b.max.y-b.min.y,b.max.z-b.min.z];
+ const axes=[0,1,2].sort((a,b)=>size[b]-size[a]).slice(0,2);
+ const min=[b.min.x,b.min.y,b.min.z],uv=new Float32Array(pos.count*2);
+ for(let i=0;i<pos.count;i++){uv[2*i]=(pos.getComponent(i,axes[0])-min[axes[0]])/Math.max(1e-6,size[axes[0]]);uv[2*i+1]=(pos.getComponent(i,axes[1])-min[axes[1]])/Math.max(1e-6,size[axes[1]]);}
+ geo.setAttribute('uv',new THREE.BufferAttribute(uv,2));return pos.count;
+}
 function valveMaterial(name){
  const n=name.toLowerCase();
  if(n.includes('mirrorproval')||n.includes('-m2')) return new THREE.MeshPhysicalMaterial({color:0xe67a2c,metalness:.42,roughness:.36,envMapIntensity:1.25,clearcoat:.22,clearcoatRoughness:.18});
@@ -102,11 +117,11 @@ function createMaterial(mesh){
  const name=(mesh.name||mesh.parent?.name||'').trim();const n=name.toLowerCase();
  if(['ST - PSHM - HF - 04','ST - PSHM - HF - 04.001','ST - PSHM - HF - 02','ST - PSHM - HF - 02.001'].includes(name)) return transparentPlastic();
  if(n.includes('proval')) return valveMaterial(name);
- if(name==='New object.010') return trayPlateMaterial();
+ if(name==='New object.010'){buildTrayUV(mesh);return trayPlateMaterial();}
  if(/^new object/i.test(name) || name==='Untitled') return polishedRailMaterial();
  return defaultMetal(name);
 }
-let center=new THREE.Vector3(),distance=4,model=null,rotating=false,aoEnabled=true;
+let center=new THREE.Vector3(),distance=4,model=null,rotating=false,aoEnabled=false;
 let processGroup=null,powderPoints=null,powderPositions=null,powderSeeds=null,powderFlow=null;
 
 const tempBox=new THREE.Box3();
@@ -117,7 +132,7 @@ function clearProcessVisuals(){if(processGroup){scene.remove(processGroup);proce
 function buildProcessVisuals(){
  clearProcessVisuals(); if(!model) return;
  const tube=findPreferredMesh(['ST - PSHM - HF - 04','ST - PSHM - HF - 04.001']); const tank=findPreferredMesh(['ST - PSHM - HF - 02','ST - PSHM - HF - 02.001']);
- if(!tube || !tank) return;
+ if(!tube || !tank){el('meshCount').textContent='Process parts could not be located in the CAD file';return;}
  processGroup=new THREE.Group(); scene.add(processGroup);
  const tubeBox=new THREE.Box3().setFromObject(tube), tankBox=new THREE.Box3().setFromObject(tank);
  const tubeSize=tubeBox.getSize(new THREE.Vector3()), tankSize=tankBox.getSize(new THREE.Vector3());
@@ -125,13 +140,13 @@ function buildProcessVisuals(){
  const tankRadius=Math.min(tankSize.x,tankSize.z)*.43; const fillHeight=tankSize.y*.5;
  const fillGeo=new THREE.CylinderGeometry(tankRadius,tankRadius,fillHeight,32,1);
  const fillMat=new THREE.MeshStandardMaterial({color:0xf7f5ef,roughness:.96,metalness:.01});
- const fillMesh=new THREE.Mesh(fillGeo,fillMat);fillMesh.renderOrder=1; fillMesh.position.set(tankCenter.x,tankBox.min.y+fillHeight/2+.03,tankCenter.z); fillMesh.castShadow=false; fillMesh.receiveShadow=true; processGroup.add(fillMesh);
+ const fillMesh=new THREE.Mesh(fillGeo,fillMat);fillMesh.renderOrder=2; fillMesh.position.set(tankCenter.x,tankBox.min.y+fillHeight/2+.03,tankCenter.z); fillMesh.castShadow=false; fillMesh.receiveShadow=true; processGroup.add(fillMesh);
  const topPowder=new THREE.Mesh(new THREE.CircleGeometry(tankRadius*.98,32),new THREE.MeshStandardMaterial({color:0xfffaf0,roughness:.96,metalness:0})); topPowder.rotation.x=-Math.PI/2; topPowder.position.set(tankCenter.x,tankBox.min.y+fillHeight+.031,tankCenter.z); processGroup.add(topPowder);
  const count=window.innerWidth<700?1100:1700; powderPositions=new Float32Array(count*3); powderSeeds=new Float32Array(count*4);
  for(let i=0;i<count;i++){powderSeeds[i*4]=Math.random();powderSeeds[i*4+1]=Math.random();powderSeeds[i*4+2]=Math.random();powderSeeds[i*4+3]=Math.random();}
  const geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.BufferAttribute(powderPositions,3));
- const mat=new THREE.PointsMaterial({color:0xffffff,size:window.innerWidth<700?.024:.03,transparent:true,opacity:.95,depthWrite:false,sizeAttenuation:true});
- powderPoints=new THREE.Points(geo,mat);powderPoints.renderOrder=3;powderPoints.frustumCulled=false;processGroup.add(powderPoints);
+ const mat=new THREE.PointsMaterial({color:0xffffff,size:window.innerWidth<700?.024:.03,transparent:true,opacity:.93,depthTest:false,depthWrite:false,sizeAttenuation:true,toneMapped:false});
+ powderPoints=new THREE.Points(geo,mat);powderPoints.renderOrder=5;powderPoints.frustumCulled=false;processGroup.add(powderPoints);
  powderFlow={tubeCenter,tubeBox,tankCenter,tankBox,flowRadius:Math.min(tubeSize.x,tubeSize.z)*.24,tankRadius:tankRadius*.9,fillTop:tankBox.min.y+fillHeight+.03};
 }
 function updatePowder(dt,time){
@@ -147,7 +162,7 @@ function updatePowder(dt,time){
 }
 function onLoaded(gltf){
  if(model){modelGroup.remove(model);model.traverse(o=>{if(o.isMesh){o.material.dispose?.();}})}
- model=gltf.scene;let count=0;model.traverse(o=>{if(!o.isMesh)return;const original=o.material;o.material=createMaterial(o);if(o.material.transmission>0)o.renderOrder=2;o.castShadow=o.material.transmission<=0;o.receiveShadow=o.material.transmission<=0;if(original&&original.dispose)original.dispose();count++;});
+ model=gltf.scene;let count=0;model.traverse(o=>{if(!o.isMesh)return;const original=o.material;o.material=createMaterial(o);const isGlass=o.material.transparent&&o.material.opacity<.5;if(isGlass)o.renderOrder=3;o.castShadow=!isGlass;o.receiveShadow=!isGlass;if(original&&original.dispose)original.dispose();count++;});
  modelGroup.add(model);
  tempBox.setFromObject(model);let sz=tempBox.getSize(new THREE.Vector3());
  const longest=Math.max(sz.x,sz.y,sz.z);if(!Number.isFinite(longest)||longest<=0){throw Error('The model contains no usable geometry.');}
@@ -157,7 +172,7 @@ function onLoaded(gltf){
  const shadowExtent=Math.max(sz.x,sz.y,sz.z)*2.6;key.shadow.camera.left=-shadowExtent;key.shadow.camera.right=shadowExtent;key.shadow.camera.top=shadowExtent;key.shadow.camera.bottom=-shadowExtent;key.shadow.camera.near=.05;key.shadow.camera.far=shadowExtent*8;
  key.shadow.camera.updateProjectionMatrix();key.target.position.copy(center);scene.add(key.target);key.position.copy(center).add(new THREE.Vector3(-6,10,7));
  buildProcessVisuals();
- el('meshCount').textContent=`${count} CAD meshes · Transparent process tube and powder flow`; 
+ el('meshCount').textContent=`PROCESS V4 · ${count} CAD meshes · ${powderSeeds?.length/4||0} moving particles · original textured base`; 
  frame();status.hidden=true;
 }
 // Optional lightweight screen-space ambient occlusion. Depth-based, 12 samples, device-safe.
@@ -179,6 +194,7 @@ const postMaterial=new THREE.ShaderMaterial({depthTest:false,depthWrite:false,un
  occlusion+=smoothstep(delta,delta*12.,diff)*(1.-smoothstep(delta*12.,delta*65.,abs(diff)));
  total+=1.;}
  float ao=1.-uStrength*(occlusion/max(1.,total));gl_FragColor=vec4(rgb*ao,1.);
+#include <colorspace_fragment>
  }`});
 post.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),postMaterial));
 function resize(){const w=viewport.clientWidth,h=viewport.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();let width=renderer.domElement.width,height=renderer.domElement.height;target.setSize(width,height);postMaterial.uniforms.uResolution.value.set(width,height);}

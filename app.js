@@ -7,10 +7,10 @@ const $=id=>document.getElementById(id),fa=n=>new Intl.NumberFormat('fa-IR').for
 const stage=$('stage'), scene=new T.Scene();
 let renderer;
 try{renderer=new T.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});}catch(error){$('loading').innerHTML='<strong>نمایش سه‌بعدی در این مرورگر فعال نیست.</strong><small>WebGL را فعال کنید یا مرورگر دیگری باز کنید.</small>';$('status').textContent='WebGL در دسترس نیست';throw error;}
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.localClippingEnabled=true;renderer.domElement.setAttribute('aria-label','مدل سه‌بعدی پمپ صنعتی؛ برای چرخش بکشید');stage.prepend(renderer.domElement);
+renderer.setPixelRatio(Math.min(devicePixelRatio,window.matchMedia('(max-width:760px)').matches?1.5:2));renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.localClippingEnabled=true;renderer.domElement.setAttribute('aria-label','مدل سه‌بعدی پمپ صنعتی؛ برای چرخش بکشید');stage.prepend(renderer.domElement);
 const camera=new T.PerspectiveCamera(38,1,.005,100),controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.075;controls.minDistance=.35;controls.maxDistance=4;controls.maxPolarAngle=Math.PI*.88;controls.autoRotateSpeed=.65;
 const pmrem=new T.PMREMGenerator(renderer),room=new RoomEnvironment(),environment=pmrem.fromScene(room,.04);scene.environment=environment.texture;room.dispose();pmrem.dispose();
-scene.add(new T.HemisphereLight(0xe6f6ff,0x71818a,2));const key=new T.DirectionalLight(0xfff4e1,3);key.position.set(-1.5,3,2);key.castShadow=true;key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-1,right:1,top:1,bottom:-1,near:.1,far:8});key.shadow.bias=-.00015;key.shadow.normalBias=.001;scene.add(key);const fill=new T.DirectionalLight(0xc7e6ff,1.8);fill.position.set(2,1,-1);scene.add(fill);
+scene.add(new T.HemisphereLight(0xe6f6ff,0x71818a,2));const key=new T.DirectionalLight(0xfff4e1,3);key.position.set(-1.5,3,2);key.castShadow=true;key.shadow.mapSize.set(window.matchMedia('(max-width:760px)').matches?1024:2048,window.matchMedia('(max-width:760px)').matches?1024:2048);Object.assign(key.shadow.camera,{left:-1,right:1,top:1,bottom:-1,near:.1,far:8});key.shadow.bias=-.00015;key.shadow.normalBias=.001;scene.add(key);const fill=new T.DirectionalLight(0xc7e6ff,1.8);fill.position.set(2,1,-1);scene.add(fill);
 const ground=new T.Mesh(new T.PlaneGeometry(200,200),new T.ShadowMaterial({color:0x163a4b,opacity:.17}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);const grid=new T.GridHelper(4,60,0x8cabbc,0xaec3cf);grid.material.transparent=true;grid.material.opacity=.20;grid.position.y=.0005;scene.add(grid);
 const root=new T.Group();scene.add(root);const parts=[],shellParts=[];let modelCenter=new T.Vector3(0,.16,0),explodeCurrent=0,explodeTarget=0,playing=true,flowPhase=0,speed=1,last=performance.now(),background='studio',ready=false,responsiveFactor=.68;
 const curve=new T.CatmullRomCurve3([new T.Vector3(0,.185,.435),new T.Vector3(0,.185,.31),new T.Vector3(0,.185,.235),new T.Vector3(0,.185,.187),new T.Vector3(-.049,.205,.187),new T.Vector3(-.042,.246,.187),new T.Vector3(.018,.275,.187),new T.Vector3(.073,.277,.187),new T.Vector3(.08,.335,.187),new T.Vector3(.08,.455,.187)],false,'centripetal');
@@ -26,6 +26,26 @@ function resize(){const rect=stage.getBoundingClientRect();const next=rect.width
 new ResizeObserver(resize).observe(stage);
 new GLTFLoader().load('./motor.glb',g=>{const box=new T.Box3().setFromObject(g.scene);modelCenter=box.getCenter(new T.Vector3());const floor=box.min.y-.003;ground.position.y=floor;grid.position.y=floor+.0005;
 g.scene.traverse(mesh=>{if(!mesh.isMesh)return;const index=parseInt(mesh.name.slice(0,3),10);mesh.material=mesh.material.clone();mesh.material.roughness=Math.max(.28,mesh.material.roughness);mesh.castShadow=true;mesh.receiveShadow=true;const b=new T.Box3().setFromObject(mesh),center=b.getCenter(new T.Vector3());const dir=center.clone().sub(modelCenter);if(dir.length()<.01)dir.set(.1,.1,.1);dir.normalize();let offset=dir.multiplyScalar(.10);if(index>=9&&index<=19){offset=new T.Vector3((center.x)*.2,Math.max(0,center.y-.185)*.4,.12+(index===10?.07:index===11?.13:index===12?.2:0));}else if(index===37){offset.set(0,.055,.065);}else if(index===42||index>=43&&index<=46){offset.set(.04,.20,0);}else if(index>=47){offset.z-=.13;offset.y+=.02;}parts.push({mesh,index,original:mesh.position.clone(),offset});if([9,10,11,20,23,26,94].includes(index))shellParts.push(mesh);});root.add(g.scene);setShellColor('#247b95');ready=true;$('partCount').textContent=parts.length;$('loading').hidden=true;$('status').textContent='مدل آماده است';frame();resize();},undefined,e=>{$('loading').innerHTML='<strong class="error">بارگذاری مدل انجام نشد</strong><small>صفحه را دوباره بارگذاری کنید.</small>';$('status').textContent='خطا در بارگذاری مدل';console.error(e);});
+// On phones, one compact control group is shown at a time while the model remains visible.
+const mobileControls=$('controlsPanel');
+const mobileTabs=[...document.querySelectorAll('[data-mobile-panel]')];
+function setMobilePanel(name){
+ mobileControls.dataset.openPanel=name||'';
+ mobileControls.classList.toggle('mobile-panel-open',Boolean(name));
+ mobileTabs.forEach(button=>{
+  const active=button.dataset.mobilePanel===name;
+  button.classList.toggle('is-active',active);
+  button.setAttribute('aria-expanded',String(active));
+ });
+ document.querySelectorAll('[data-panel-section]').forEach(section=>{
+  section.classList.toggle('is-mobile-active',section.dataset.panelSection===name);
+ });
+}
+mobileTabs.forEach(button=>button.addEventListener('click',()=>{
+ setMobilePanel(mobileControls.dataset.openPanel===button.dataset.mobilePanel?'':button.dataset.mobilePanel);
+}));
+setMobilePanel('');
+
 document.querySelectorAll('[data-color]').forEach(b=>b.addEventListener('click',()=>setShellColor(b.dataset.color)));$('shellColor').addEventListener('input',e=>setShellColor(e.target.value));document.querySelectorAll('[data-bg]').forEach(b=>b.addEventListener('click',()=>setBackground(b.dataset.bg)));$('backgroundColor').addEventListener('input',e=>{setBackground('custom',e.target.value);stage.classList.toggle('dark-mode',new T.Color(e.target.value).getHSL({}).l<.3);});
 $('light').addEventListener('input',()=>{renderer.toneMappingExposure=1.25*Number($('light').value)/100;$('lightValue').textContent=fa($('light').value)+'٪';});$('explode').addEventListener('input',()=>{const previous=1+explodeTarget*.35;explodeTarget=Number($('explode').value)/100;const delta=camera.position.clone().sub(controls.target).multiplyScalar((1+explodeTarget*.35)/previous);camera.position.copy(controls.target).add(delta);controls.update();$('explodeValue').textContent=fa($('explode').value)+'٪';});$('cutaway').addEventListener('change',updateCutaway);$('wireframe').addEventListener('change',()=>parts.forEach(p=>p.mesh.material.wireframe=$('wireframe').checked));
 function syncPlay(){const active=playing&&$('flow').checked;$('play').textContent=active?'Ⅱ':'▶';$('play').setAttribute('aria-label',active?'توقف افکت جریان':'پخش افکت جریان');$('playState').textContent=!$('flow').checked?'نمایش جریان خاموش است':playing?'جریان در حال حرکت':'جریان متوقف است';document.body.classList.toggle('paused',!active);}

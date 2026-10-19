@@ -32,17 +32,16 @@ import * as THREE from 'three';
 import { GLTFLoader } from '../GLTFLoader.js';
 import { OrbitControls } from '../OrbitControls.js';
 const el=id=>document.getElementById(id), viewport=el('viewport'), status=el('status'), msg=el('message');
-const scene=new THREE.Scene();scene.background=new THREE.Color(0x19242d);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0x223543);
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});
 renderer.setPixelRatio(Math.min(devicePixelRatio,window.innerWidth<700?1.5:2));
 renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.32;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMappingExposure=1.56;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 viewport.appendChild(renderer.domElement);
 const camera=new THREE.PerspectiveCamera(34,1,.01,1000);
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.055;controls.minPolarAngle=.12;controls.maxPolarAngle=Math.PI-.12;controls.screenSpacePanning=true;
-scene.add(new THREE.AmbientLight(0xe1ecf7,.13));
+scene.add(new THREE.AmbientLight(0xeaf3fb,.24));
 const modelGroup=new THREE.Group();scene.add(modelGroup);
-const floorGroup=new THREE.Group();scene.add(floorGroup);
 function makeDiamondPlateTextures(){
  const size=256, step=32;
  const colorCanvas=document.createElement('canvas');colorCanvas.width=colorCanvas.height=size;
@@ -59,8 +58,7 @@ function makeDiamondPlateTextures(){
  return {color:buildTex(colorCanvas), bump:buildTex(roughCanvas), rough:buildTex(roughCanvas)};
 }
 const plateMaps=makeDiamondPlateTextures();
-const floorPlate=new THREE.Mesh(new THREE.PlaneGeometry(24,24),new THREE.MeshStandardMaterial({map:plateMaps.color,bumpMap:plateMaps.bump,bumpScale:.07,roughnessMap:plateMaps.rough,roughness:.56,metalness:.82,envMapIntensity:1.35,color:0xd6dde2}));floorPlate.rotation.x=-Math.PI/2;floorPlate.receiveShadow=true;floorGroup.add(floorPlate);
-const shadowPlane=new THREE.Mesh(new THREE.PlaneGeometry(26,26),new THREE.ShadowMaterial({color:0x02060a,opacity:.18}));shadowPlane.rotation.x=-Math.PI/2;shadowPlane.receiveShadow=true;scene.add(shadowPlane);
+const shadowPlane=new THREE.Mesh(new THREE.PlaneGeometry(26,26),new THREE.ShadowMaterial({color:0x02060a,opacity:.12}));shadowPlane.rotation.x=-Math.PI/2;shadowPlane.receiveShadow=true;scene.add(shadowPlane);
 // Large emissive studio panels are reflected by all metallic PBR surfaces via PMREM.
 function studioEnvironment(){
  const studio=new THREE.Scene();studio.background=new THREE.Color(0x101820);
@@ -79,14 +77,15 @@ function studioEnvironment(){
  const pmrem=new THREE.PMREMGenerator(renderer);pmrem.compileCubemapShader();const tex=pmrem.fromScene(studio,.035,.1,40).texture;pmrem.dispose();
  studio.traverse(x=>{if(x.isMesh){x.geometry.dispose();x.material.dispose();}});return tex;
 }
-let envTexture=studioEnvironment();scene.environment=envTexture;scene.environmentIntensity=1.65;
-const key=new THREE.DirectionalLight(0xf7faff,3.0);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.bias=-.00015;key.shadow.normalBias=.015;key.shadow.radius=3;scene.add(key);
-const fill=new THREE.DirectionalLight(0x9fc5e7,2);fill.position.set(8,2,-3);scene.add(fill);
-const rim=new THREE.DirectionalLight(0xffffff,1.5);rim.position.set(2,7,-9);scene.add(rim);
+let envTexture=studioEnvironment();scene.environment=envTexture;scene.environmentIntensity=1.95;
+const key=new THREE.DirectionalLight(0xf7faff,3.4);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.bias=-.00015;key.shadow.normalBias=.015;key.shadow.radius=3;scene.add(key);
+const fill=new THREE.DirectionalLight(0xb8d7f0,2.4);fill.position.set(8,3,-3);scene.add(fill);
+const rim=new THREE.DirectionalLight(0xffffff,1.9);rim.position.set(2,8,-9);scene.add(rim);
 function transparentPlastic(){
- return new THREE.MeshPhysicalMaterial({color:0xf2fbff,metalness:0,roughness:.1,transmission:.88,transparent:true,opacity:.28,thickness:.32,ior:1.46,clearcoat:1,clearcoatRoughness:.04,envMapIntensity:1.1,side:THREE.DoubleSide});
+ return new THREE.MeshPhysicalMaterial({color:0xf7fcff,metalness:0,roughness:.035,transmission:.84,transparent:true,opacity:.23,depthWrite:false,thickness:.08,ior:1.49,clearcoat:1,clearcoatRoughness:.02,envMapIntensity:1.45,side:THREE.DoubleSide});
 }
-function polishedRailMaterial(){return new THREE.MeshPhysicalMaterial({color:0xe7eff3,metalness:1,roughness:.12,envMapIntensity:2.2,clearcoat:.22,clearcoatRoughness:.1});}
+function polishedRailMaterial(){return new THREE.MeshPhysicalMaterial({color:0xf1f6f8,metalness:1,roughness:.08,envMapIntensity:2.35,clearcoat:.28,clearcoatRoughness:.08});}
+function trayPlateMaterial(){return new THREE.MeshStandardMaterial({map:plateMaps.color,bumpMap:plateMaps.bump,bumpScale:.08,roughnessMap:plateMaps.rough,roughness:.58,metalness:.86,envMapIntensity:1.55,color:0xd6dde2});}
 function valveMaterial(name){
  const n=name.toLowerCase();
  if(n.includes('mirrorproval')||n.includes('-m2')) return new THREE.MeshPhysicalMaterial({color:0xe67a2c,metalness:.42,roughness:.36,envMapIntensity:1.25,clearcoat:.22,clearcoatRoughness:.18});
@@ -103,6 +102,7 @@ function createMaterial(mesh){
  const name=(mesh.name||mesh.parent?.name||'').trim();const n=name.toLowerCase();
  if(['ST - PSHM - HF - 04','ST - PSHM - HF - 04.001','ST - PSHM - HF - 02','ST - PSHM - HF - 02.001'].includes(name)) return transparentPlastic();
  if(n.includes('proval')) return valveMaterial(name);
+ if(name==='New object.010') return trayPlateMaterial();
  if(/^new object/i.test(name) || name==='Untitled') return polishedRailMaterial();
  return defaultMetal(name);
 }
@@ -111,33 +111,34 @@ let processGroup=null,powderPoints=null,powderPositions=null,powderSeeds=null,po
 
 const tempBox=new THREE.Box3();
 function frame(){const aspect=viewport.clientWidth/viewport.clientHeight;const fitHeight=distance/(2*Math.tan(THREE.MathUtils.degToRad(camera.fov)/2));const fitWidth=fitHeight/Math.max(.5,aspect);const d=Math.max(fitHeight,fitWidth)*1.3;camera.position.copy(center).add(new THREE.Vector3(.85,.52,1).normalize().multiplyScalar(d));controls.target.copy(center);controls.minDistance=d*.28;controls.maxDistance=d*4;controls.update();}
-function findMesh(name){return model?.getObjectByName(name)||null;}
+function findPreferredMesh(names){const set=new Set(Array.isArray(names)?names:[names]);let best=null,bestScore=Infinity;model?.traverse(o=>{if(!o.isMesh||!set.has(o.name))return;const box=new THREE.Box3().setFromObject(o);const c=box.getCenter(new THREE.Vector3());const score=Math.abs(c.x)*2+Math.abs(c.z)*2+Math.abs(c.y)*.2; if(score<bestScore){bestScore=score;best=o;}});return best;}
+function findMesh(name){return findPreferredMesh([name]);}
 function clearProcessVisuals(){if(processGroup){scene.remove(processGroup);processGroup.traverse(o=>{if(o.geometry)o.geometry.dispose?.();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose?.());else o.material.dispose?.();}});}processGroup=null;powderPoints=null;powderPositions=null;powderSeeds=null;powderFlow=null;}
 function buildProcessVisuals(){
  clearProcessVisuals(); if(!model) return;
- const tube=findMesh('ST - PSHM - HF - 04'); const tank=findMesh('ST - PSHM - HF - 02.001');
+ const tube=findPreferredMesh(['ST - PSHM - HF - 04','ST - PSHM - HF - 04.001']); const tank=findPreferredMesh(['ST - PSHM - HF - 02','ST - PSHM - HF - 02.001']);
  if(!tube || !tank) return;
  processGroup=new THREE.Group(); scene.add(processGroup);
  const tubeBox=new THREE.Box3().setFromObject(tube), tankBox=new THREE.Box3().setFromObject(tank);
  const tubeSize=tubeBox.getSize(new THREE.Vector3()), tankSize=tankBox.getSize(new THREE.Vector3());
  const tubeCenter=tubeBox.getCenter(new THREE.Vector3()), tankCenter=tankBox.getCenter(new THREE.Vector3());
- const tankRadius=Math.min(tankSize.x,tankSize.z)*.43; const fillHeight=tankSize.y*.48;
+ const tankRadius=Math.min(tankSize.x,tankSize.z)*.43; const fillHeight=tankSize.y*.5;
  const fillGeo=new THREE.CylinderGeometry(tankRadius,tankRadius,fillHeight,32,1);
- const fillMat=new THREE.MeshStandardMaterial({color:0xf5f2e8,roughness:.92,metalness:.02});
- const fillMesh=new THREE.Mesh(fillGeo,fillMat); fillMesh.position.set(tankCenter.x,tankBox.min.y+fillHeight/2+.03,tankCenter.z); fillMesh.castShadow=false; fillMesh.receiveShadow=true; processGroup.add(fillMesh);
+ const fillMat=new THREE.MeshStandardMaterial({color:0xf7f5ef,roughness:.96,metalness:.01});
+ const fillMesh=new THREE.Mesh(fillGeo,fillMat);fillMesh.renderOrder=1; fillMesh.position.set(tankCenter.x,tankBox.min.y+fillHeight/2+.03,tankCenter.z); fillMesh.castShadow=false; fillMesh.receiveShadow=true; processGroup.add(fillMesh);
  const topPowder=new THREE.Mesh(new THREE.CircleGeometry(tankRadius*.98,32),new THREE.MeshStandardMaterial({color:0xfffaf0,roughness:.96,metalness:0})); topPowder.rotation.x=-Math.PI/2; topPowder.position.set(tankCenter.x,tankBox.min.y+fillHeight+.031,tankCenter.z); processGroup.add(topPowder);
- const count=window.innerWidth<700?650:900; powderPositions=new Float32Array(count*3); powderSeeds=new Float32Array(count*4);
+ const count=window.innerWidth<700?1100:1700; powderPositions=new Float32Array(count*3); powderSeeds=new Float32Array(count*4);
  for(let i=0;i<count;i++){powderSeeds[i*4]=Math.random();powderSeeds[i*4+1]=Math.random();powderSeeds[i*4+2]=Math.random();powderSeeds[i*4+3]=Math.random();}
  const geo=new THREE.BufferGeometry(); geo.setAttribute('position',new THREE.BufferAttribute(powderPositions,3));
- const mat=new THREE.PointsMaterial({color:0xffffff,size:window.innerWidth<700?.022:.028,transparent:true,opacity:.95,depthWrite:false,sizeAttenuation:true});
- powderPoints=new THREE.Points(geo,mat); processGroup.add(powderPoints);
- powderFlow={tubeCenter,tubeBox,tankCenter,tankBox,flowRadius:Math.min(tubeSize.x,tubeSize.z)*.18,tankRadius:tankRadius*.9,fillTop:tankBox.min.y+fillHeight+.03};
+ const mat=new THREE.PointsMaterial({color:0xffffff,size:window.innerWidth<700?.024:.03,transparent:true,opacity:.95,depthWrite:false,sizeAttenuation:true});
+ powderPoints=new THREE.Points(geo,mat);powderPoints.renderOrder=3;powderPoints.frustumCulled=false;processGroup.add(powderPoints);
+ powderFlow={tubeCenter,tubeBox,tankCenter,tankBox,flowRadius:Math.min(tubeSize.x,tubeSize.z)*.24,tankRadius:tankRadius*.9,fillTop:tankBox.min.y+fillHeight+.03};
 }
 function updatePowder(dt,time){
  if(!powderPoints || !powderFlow) return;
- const tubeTop=powderFlow.tubeBox.max.y-.1, tubeBottom=powderFlow.tubeBox.min.y+.1, tankTop=powderFlow.tankBox.max.y-.05;
+ const tubeTop=powderFlow.tubeBox.max.y-.05, tubeBottom=powderFlow.tubeBox.min.y+.02, tankTop=powderFlow.tankBox.max.y-.03;
  for(let i=0;i<powderSeeds.length/4;i++){
-  const base=i*4, p=(powderSeeds[base]+time*.16*(.75+powderSeeds[base+3]*1.4))%1; const id=i*3; let x,y,z;
+  const base=i*4, p=(powderSeeds[base]+time*.23*(.85+powderSeeds[base+3]*1.5))%1; const id=i*3; let x,y,z;
   if(p<.62){const t=p/.62, ang=powderSeeds[base+1]*Math.PI*2+time*.55, rad=powderFlow.flowRadius*(.2+.8*powderSeeds[base+2]); x=powderFlow.tubeCenter.x+Math.cos(ang)*rad*.55; z=powderFlow.tubeCenter.z+Math.sin(ang)*rad*.55; y=THREE.MathUtils.lerp(tubeTop,tubeBottom,t);}
   else {const t=(p-.62)/.38, ang=powderSeeds[base+1]*Math.PI*2+time*.95, rad=powderFlow.tankRadius*(.12+.82*powderSeeds[base+2]); x=powderFlow.tankCenter.x+Math.cos(ang)*rad*.8; z=powderFlow.tankCenter.z+Math.sin(ang)*rad*.8; y=THREE.MathUtils.lerp(tankTop,powderFlow.fillTop+.02,t);}
   powderPositions[id]=x; powderPositions[id+1]=y; powderPositions[id+2]=z;
@@ -146,17 +147,17 @@ function updatePowder(dt,time){
 }
 function onLoaded(gltf){
  if(model){modelGroup.remove(model);model.traverse(o=>{if(o.isMesh){o.material.dispose?.();}})}
- model=gltf.scene;let count=0;model.traverse(o=>{if(!o.isMesh)return;const original=o.material;o.material=createMaterial(o);o.castShadow=true;o.receiveShadow=true;if(original&&original.dispose)original.dispose();count++;});
+ model=gltf.scene;let count=0;model.traverse(o=>{if(!o.isMesh)return;const original=o.material;o.material=createMaterial(o);if(o.material.transmission>0)o.renderOrder=2;o.castShadow=o.material.transmission<=0;o.receiveShadow=o.material.transmission<=0;if(original&&original.dispose)original.dispose();count++;});
  modelGroup.add(model);
  tempBox.setFromObject(model);let sz=tempBox.getSize(new THREE.Vector3());
  const longest=Math.max(sz.x,sz.y,sz.z);if(!Number.isFinite(longest)||longest<=0){throw Error('The model contains no usable geometry.');}
  model.scale.multiplyScalar(3/longest);tempBox.setFromObject(model);sz=tempBox.getSize(new THREE.Vector3());
  center=tempBox.getCenter(new THREE.Vector3());distance=Math.max(sz.x,sz.y,sz.z);
- const floor=tempBox.min.y-.015;floorPlate.position.set(center.x,floor-.002,center.z);shadowPlane.position.set(center.x,floor-.005,center.z);const floorSpan=Math.max(sz.x,sz.z)*1.24;floorPlate.scale.set(floorSpan/24,floorSpan/24,1);shadowPlane.scale.set(floorSpan/26,floorSpan/26,1);
+ const floor=tempBox.min.y-.015;shadowPlane.position.set(center.x,floor-.005,center.z);const floorSpan=Math.max(sz.x,sz.z)*1.12;shadowPlane.scale.set(floorSpan/26,floorSpan/26,1);
  const shadowExtent=Math.max(sz.x,sz.y,sz.z)*2.6;key.shadow.camera.left=-shadowExtent;key.shadow.camera.right=shadowExtent;key.shadow.camera.top=shadowExtent;key.shadow.camera.bottom=-shadowExtent;key.shadow.camera.near=.05;key.shadow.camera.far=shadowExtent*8;
  key.shadow.camera.updateProjectionMatrix();key.target.position.copy(center);scene.add(key.target);key.position.copy(center).add(new THREE.Vector3(-6,10,7));
  buildProcessVisuals();
- el('meshCount').textContent=`${count} CAD meshes · White milk-powder flow visualized`;
+ el('meshCount').textContent=`${count} CAD meshes · Transparent process tube and powder flow`; 
  frame();status.hidden=true;
 }
 // Optional lightweight screen-space ambient occlusion. Depth-based, 12 samples, device-safe.
@@ -195,17 +196,17 @@ const loader=new GLTFLoader();
 function loadUrl(url){status.hidden=false;status.querySelector('strong').textContent='PREPARING 3D SCENE';msg.textContent='Loading polished steel assembly...';el('progress').hidden=false;el('localUpload').hidden=true;
  loader.load(url,g=>{try{onLoaded(g)}catch(e){showError(e.message);}},ev=>{if(ev.total>0)msg.textContent=`Loading CAD geometry · ${Math.round(100*ev.loaded/ev.total)}%`;},e=>showError('The GLB is not published in this path yet. You can open the model locally using the button below.'));}
 async function loadPacked(){
- status.hidden=false;status.querySelector('strong').textContent='PREPARING 3D SCENE';msg.textContent='Loading compressed CAD model...';el('progress').hidden=false;el('localUpload').hidden=true;
- try{
+ status.hidden=false;status.querySelector('strong').textContent='PREPARING 3D SCENE';msg.textContent='Loading compressed CAD assembly...';el('progress').hidden=false;el('localUpload').hidden=true;
+ try {
   const response=await fetch('./assembly.glb.gz');
-  if(!response.ok)throw Error('Model download failed: HTTP '+response.status);
+  if(!response.ok)throw Error('CAD download failed (HTTP '+response.status+')');
   let bytes=await response.arrayBuffer();
-  const head=new Uint8Array(bytes);
-  if(head[0]===31&&head[1]===139){
-   if(typeof DecompressionStream!=='function')throw Error('This browser cannot decompress the model.');
+  const magic=new Uint8Array(bytes);
+  if(magic[0]===31 && magic[1]===139){
+   if(typeof DecompressionStream!=='function')throw Error('Compressed GLB is not supported by this browser');
    bytes=await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
   }
-  loader.parse(bytes,'',g=>{try{onLoaded(g)}catch(e){showError(e?.message||String(e));}},e=>showError('Could not read model: '+(e?.message||String(e))));
+  loader.parse(bytes,'',g=>{try{onLoaded(g)}catch(e){showError(e?.message||String(e));}},e=>showError('Model parsing failed: '+(e?.message||String(e))));
  }catch(e){showError(e?.message||String(e));}
 }
 loadPacked();

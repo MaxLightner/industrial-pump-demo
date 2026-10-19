@@ -21,7 +21,7 @@
 </head>
 <body>
 <div id="viewport" aria-label="Interactive stainless steel CAD model"></div>
-<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">POWDER FLOW V6 · 02</div></header>
+<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">MILK POWDER V7 · 186 CAD MESHES</div></header>
 <div class="info" aria-hidden="true"><div class="rail"></div><div class="large">02</div><div class="small">ENGINEERED IN METAL</div></div>
 <div class="toolbar" aria-label="Camera controls"><button class="tool" id="plus" type="button" title="Zoom in" aria-label="Zoom in">+</button><button class="tool" id="minus" type="button" title="Zoom out" aria-label="Zoom out">−</button><button class="tool" id="reset" type="button" title="Reset view" aria-label="Reset view"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6M4 4v5h5"/></svg></button><button class="tool" id="fullscreen" type="button" title="Fullscreen" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button></div>
 <footer class="bottom"><div class="spec"><strong>STAINLESS STEEL · STUDIO FINISH</strong><div id="meshCount">Drag to orbit · Scroll to zoom</div></div><div class="controls"><div class="switchline"><button id="ao" class="toggle" type="button" role="switch" aria-checked="false" aria-label="Ambient occlusion"></button><span>Ambient occlusion</span></div><div class="divider"></div><button id="spin" class="action" type="button" aria-pressed="false">Auto rotate</button></div></footer>
@@ -116,6 +116,7 @@ function defaultMetal(name){
 function meshKey(o){return String(o.name||o.parent?.name||'').toLowerCase().replace(/[^a-z0-9]+/g,'')}
 function createMaterial(mesh){
  const name=mesh.name||mesh.parent?.name||'',n=meshKey(mesh);
+ if(n.includes('usermilkpowder'))return new THREE.MeshStandardMaterial({color:0xfaf8ef,metalness:0,roughness:.97,side:THREE.DoubleSide});
  if(n.includes('stpshmhf04')||n.includes('stpshmhf02'))return transparentPlastic();
  if(n.includes('300mirrorprovaldn125m2')||n.includes('300provaldn125m2'))return new THREE.MeshPhysicalMaterial({color:0xff8126,metalness:.32,roughness:.27,clearcoat:.7,clearcoatRoughness:.14,envMapIntensity:1.65});
  if(n.includes('300proval')||n.includes('300mirrorproval')){
@@ -153,7 +154,9 @@ function buildProcessVisuals(){
  const hopperRoots=[...findMeshes('newobject001'),...findMeshes('newobject068')].filter((x,i,a)=>a.indexOf(x)===i);
  const white=fillMaterial();
  let upper=0;
- for(const h of hopperRoots){
+ const hasUserPowderSurfaces=findMeshes('usermilkpowder').length;
+ if(hasUserPowderSurfaces)upper=hasUserPowderSurfaces;
+ for(const h of (hasUserPowderSurfaces?[]:hopperRoots)){
   const b=new THREE.Box3().setFromObject(h),d=b.getSize(new THREE.Vector3()),c=b.getCenter(new THREE.Vector3());
   if(d.y<.2||d.y/Math.max(d.x,d.z)<.5)continue;
   const radius=Math.min(d.x,d.z)*.4,height=d.y*.07;
@@ -172,7 +175,7 @@ function buildProcessVisuals(){
   const b=new THREE.Box3().setFromObject(tube),d=b.getSize(new THREE.Vector3());
   addPowderParticles(b,Math.min(d.x,d.z)*.24,window.innerWidth<700?700:1000);
  }
- el('meshCount').textContent='POWDER FLOW V6 · '+tubes.length+' clear flow tubes · '+tanks.length+' lower tanks · '+upper+' hopper fills · '+powderSystems.length+' particle fields';
+ el('meshCount').textContent='MILK POWDER V7 · '+tubes.length+' clear flow tubes · '+tanks.length+' lower tanks · '+upper+' hopper fills · '+powderSystems.length+' particle fields';
 }
 function updatePowder(_dt,time){
  for(const sys of powderSystems){
@@ -245,7 +248,7 @@ function loadUrl(url){status.hidden=false;status.querySelector('strong').textCon
 async function loadPacked(){
  status.hidden=false;status.querySelector('strong').textContent='PREPARING 3D SCENE';msg.textContent='Loading compressed CAD assembly...';el('progress').hidden=false;el('localUpload').hidden=true;
  try {
-  const response=await fetch('./assembly.glb.gz');
+  const response=await fetch('./assembly_styled.glb.gz?v=7');
   if(!response.ok)throw Error('CAD download failed (HTTP '+response.status+')');
   let bytes=await response.arrayBuffer();
   const magic=new Uint8Array(bytes);

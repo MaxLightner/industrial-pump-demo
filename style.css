@@ -2,3 +2,86 @@
 @media(min-width:761px){main{height:calc(100dvh - 90px);min-height:520px;overflow:hidden}.workspace{min-height:0}.stage{min-height:0}aside{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#385768 #162632}.control-section{padding-block:15px}.panel-heading{padding-bottom:15px}.section-title{margin-bottom:12px}}
 @media(min-width:761px){main{height:calc(100dvh - 90px);min-height:520px;overflow:hidden}.workspace{min-height:0}.stage{min-height:0}aside{overflow-y:auto;scrollbar-width:thin;scrollbar-color:#385768 #162632}.control-section{padding-block:15px}.panel-heading{padding-bottom:15px}.section-title{margin-bottom:12px}}
 .field-label,.toggle-row{font-size:12px}.section-title h3{font-size:14px}.helper{font-size:10px}.background-options button,.segmented button{font-size:11px}.custom-bg-row{font-size:11px}.field-label output{font-size:11px}.range-labels{font-size:9px}.transport-caption strong{font-size:12px}.transport-caption span{font-size:10px}.under-note{font-size:10px}@media(max-width:760px){.under-note{font-size:9px}}
+
+
+/* Mobile workspace: the 3D viewer and contextual controls always share one screen. */
+.touch-hint,.mobile-tabs{display:none}
+@media(max-width:760px){
+ html,body{width:100%;height:100%;overflow:hidden;overscroll-behavior:none}
+ body{display:flex;flex-direction:column;height:100vh;height:100dvh}
+ header{height:56px;flex:0 0 56px;padding:0 15px}
+ .brand{gap:10px;min-width:0}
+ .brand-icon{font-size:27px}
+ h1{font-size:16px;margin-bottom:4px;white-space:nowrap;letter-spacing:0}
+ .brand p{font-size:10px}
+ .header-meta{display:none}
+ main{display:flex;flex:1;flex-direction:column;min-height:0;height:auto;overflow:hidden}
+ .workspace{flex:1;min-height:0;min-width:0;padding:8px 8px 0;overflow:hidden}
+ .stage{flex:1;min-height:0;height:auto;width:100%;border-radius:12px}
+ .stage-top{inset:10px 10px auto}
+ .stage-label{font-size:11px;padding:7px 10px}
+ .stage-bottom{padding:8px 11px;background:linear-gradient(0deg,#e4edf2ed,#e4edf200);border:0;font-size:9px}
+ .stage-bottom .desktop-hint{display:none}
+ .stage-bottom .touch-hint{display:block;max-width:none;line-height:1.4}
+ .stage-bottom .axis{gap:8px}
+ .view-tools{left:10px;bottom:43px;display:grid;grid-template-columns:repeat(2,35px);gap:5px}
+ .view-tools button{width:35px;height:35px;font-size:20px;border-radius:8px}
+ .transport{flex:0 0 52px;min-height:0;margin-top:7px;padding:6px 10px;gap:10px;border-radius:9px}
+ .transport .play{width:38px;height:38px;flex:0 0 38px;font-size:17px}
+ .transport-caption{min-width:0;gap:0}
+ .transport-caption strong{font-size:11px;white-space:nowrap}
+ .transport-caption span,.transport .flow-line{display:none}
+ .transport .speed-readout{display:inline;font-size:11px;margin-inline-start:auto}
+ .transport .text-button{flex-shrink:0;max-width:none;margin:0;font-size:11px;white-space:nowrap;line-height:1.3}
+ .under-note{display:none}
+ aside#controlsPanel{flex:0 0 auto;display:flex;flex-direction:column;gap:0;height:auto;max-height:min(42dvh,278px);min-height:0;overflow:hidden;padding:0;background:#142631;border-top:1px solid #3c5966;box-shadow:0 -4px 18px #0b18232b}
+ #controlsPanel .panel-heading,#controlsPanel footer{display:none}
+ #controlsPanel .control-section{display:none}
+ #controlsPanel .control-section.is-mobile-active{display:block;order:1;flex:0 1 auto;max-height:min(30dvh,204px);min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:10px 16px 13px;border:0;scrollbar-width:thin;scrollbar-color:#466b77 transparent}
+ #controlsPanel .mobile-tabs{display:grid;order:2;grid-template-columns:repeat(5,minmax(0,1fr));flex:0 0 calc(60px + env(safe-area-inset-bottom));height:calc(60px + env(safe-area-inset-bottom));padding:4px 7px calc(4px + env(safe-area-inset-bottom));gap:3px;border-top:1px solid #35505d;background:#152b38;direction:rtl}
+ .mobile-tab{min-width:0;min-height:48px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;border:1px solid transparent;background:transparent;border-radius:9px;color:#9fb8c7;font-size:10px;line-height:1.3;white-space:nowrap;padding:3px 1px}
+ .mobile-tab .tab-icon{font-size:22px;line-height:1;color:inherit;font-family:"Segoe UI Symbol",Tahoma,sans-serif}
+ .mobile-tab.is-active{color:#62e2d7;background:#19464d;border-color:#296d70}
+ .mobile-tab:active{background:#255263}
+ #controlsPanel .section-title{margin-bottom:8px}
+ #controlsPanel .section-title h3{font-size:12px;font-weight:600}
+ #controlsPanel .section-title>span{display:none}
+ #controlsPanel .field-label{font-size:12px;margin:7px 0 5px}
+ #controlsPanel .field-label output{font-size:11px}
+ #controlsPanel .color-row{gap:6px;margin-top:8px;justify-content:space-between}
+ #controlsPanel .swatch,#controlsPanel .custom-color{width:clamp(30px,8.2vw,38px);height:clamp(30px,8.2vw,38px);flex-shrink:0}
+ #controlsPanel .helper{display:none}
+ #controlsPanel .background-options{gap:7px}
+ #controlsPanel .background-options button{font-size:11px;min-height:45px;padding:5px 4px;gap:3px}
+ #controlsPanel .bg-sample{height:13px}
+ #controlsPanel .custom-bg-row{font-size:11px;margin-top:8px;min-height:30px}
+ #controlsPanel .custom-bg-row input{height:27px;width:38px}
+ #controlsPanel input[type=range]{height:22px;margin:2px 0 5px}
+ #controlsPanel .range-labels{margin:0 0 4px;font-size:10px}
+ #controlsPanel .toggle-row{font-size:12px;min-height:30px;margin-top:5px}
+ #controlsPanel .toggle-row input{width:38px;height:22px}
+ #controlsPanel .toggle-row input:before{width:16px;height:16px}
+ #controlsPanel .toggle-row input:checked:before{transform:translateX(15px)}
+ #controlsPanel .segmented button{min-height:40px;padding:8px 4px;font-size:12px}
+ #controlsPanel .camera-section .toggle-row{max-width:none}
+ .stage:fullscreen{width:100vw;height:100dvh;min-height:0;border:0;border-radius:0}
+}
+@media(max-width:760px) and (max-height:620px){
+ header{height:49px;flex-basis:49px}
+ aside#controlsPanel{max-height:42dvh}
+ #controlsPanel .control-section.is-mobile-active{max-height:calc(42dvh - 55px);padding:7px 13px}
+ #controlsPanel .mobile-tabs{height:55px;flex-basis:55px}
+ .mobile-tab{min-height:42px}
+ .transport{flex-basis:46px}
+ .transport .play{height:34px;width:34px;flex-basis:34px}
+}
+@media(max-width:760px) and (orientation:landscape) and (max-height:520px){
+ header{display:none}
+ .workspace{padding-top:4px}
+ .stage-bottom{display:none}
+ .view-tools{bottom:10px}
+ aside#controlsPanel{max-height:43dvh}
+ #controlsPanel .control-section.is-mobile-active{max-height:calc(43dvh - 52px)}
+ #controlsPanel .mobile-tabs{height:52px;flex-basis:52px}
+ .transport{flex-basis:43px;margin-top:4px}
+}

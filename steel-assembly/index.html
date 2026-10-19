@@ -102,7 +102,21 @@ const loader=new GLTFLoader();
 function load(url){loading.hidden=false;$('loadTitle').textContent='PREPARING 3D SCENE';$('loadText').textContent='Loading stainless steel assembly...';$('local').hidden=true;
  loader.load(url,g=>{try{setup(g)}catch(e){error(e.message);}},event=>{if(event.total)$('loadText').textContent='Loading geometry · '+Math.round(100*event.loaded/event.total)+'%';},()=>error('The assembly GLB is not yet uploaded. Select your local model to preview this viewer.'));}
 function error(message){loading.hidden=false;$('loadTitle').textContent='MODEL NOT AVAILABLE';$('loadText').textContent=message;$('local').hidden=false;}
-load('./assembly.glb');
+async function loadPacked(){
+ loading.hidden=false;$('loadTitle').textContent='PREPARING 3D SCENE';$('loadText').textContent='Loading CAD geometry...';$('local').hidden=true;
+ try{
+  const response=await fetch('./assembly.glb.gz');
+  if(!response.ok)throw Error('Unable to download the CAD model: HTTP '+response.status);
+  let bytes=await response.arrayBuffer();
+  const head=new Uint8Array(bytes);
+  if(head[0]===31 && head[1]===139){
+   if(typeof DecompressionStream!=='function')throw Error('This browser does not support compressed GLB. Open the GLB locally.');
+   bytes=await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer();
+  }
+  new GLTFLoader().parse(bytes,'',g=>{try{setup(g)}catch(e){error(e.message);}},e=>error('Cannot decode geometry: '+(e?.message||e)));
+ }catch(e){error(e.message||String(e));}
+}
+loadPacked();
 $('file').onchange=e=>{const f=e.target.files?.[0];if(f){const url=URL.createObjectURL(f);load(url);setTimeout(()=>URL.revokeObjectURL(url),30000);}};
 ['dragover','drop'].forEach(name=>stage.addEventListener(name,e=>{e.preventDefault();if(name==='drop'){const f=[...e.dataTransfer.files].find(x=>/\.glb$/i.test(x.name));if(f){const url=URL.createObjectURL(f);load(url);setTimeout(()=>URL.revokeObjectURL(url),30000);}}}));
 </script></body></html>

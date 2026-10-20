@@ -116,13 +116,13 @@
  $("assetItems").addEventListener("click",e=>{
    const b=e.target.closest("[data-asset]");if(!b)return;
    const type=b.dataset.assetAction;activeAsset=b.dataset.asset;
-   if(type==="wall"){chooseCategory("wall");originalTool("wall");}
+   if(type==="wall"||type==="sample"){chooseCategory("wall");window.ArchyarPreview?.setWallPreset(b.dataset.asset);}
    else if(type==="quantities")originalTool("quantities");
    else if(type==="history")$("openRevisions").click();
    else if(type==="floors")$("sidebar").classList.add("open");
    else info(b.querySelector("span:last-child").textContent,"این گزینه هنوز ابزار هندسی فعال ندارد. در نسخه فعلی، ترسیم مستقیم دیوار داخلی قابل استفاده است.");
  });
- $("addWall").onclick=()=>{chooseCategory("wall");activeAsset="plain";originalTool("wall");};
+ $("addWall").onclick=()=>{chooseCategory("wall");activeAsset="plain";window.ArchyarPreview?.setWallPreset("plain");};
  $("finishDrawing").onclick=()=>{originalTool("select");setMode();};
  $("quickUndo").onclick=()=>$("undoBtn").click();
  $("quickRedo").onclick=()=>$("redoBtn").click();

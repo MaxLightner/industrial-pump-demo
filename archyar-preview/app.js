@@ -19,13 +19,14 @@
   function rect(x1, y1, x2, y2, h = 3.1) {
     return [wall([x1,y1],[x2,y1],h), wall([x2,y1],[x2,y2],h), wall([x2,y2],[x1,y2],h), wall([x1,y2],[x1,y1],h)];
   }
+  const wallPresets={plain:{thickness:.15,material:"دیوار داخلی"},brick:{thickness:.20,material:"بلوک سفالی"},partition:{thickness:.10,material:"پارتیشن سبک"}};
   let floors = [
     { name:"همکف", elevation:0, ceiling:3.1, walls:rect(1.8,1.6,10.4,7.8).concat([wall([6.6,1.6],[6.6,7.8])]) },
     { name:"اول", elevation:3.3, ceiling:3.1, walls:rect(2.2,2.1,10.7,7.9).concat([wall([6.1,2.1],[6.1,7.9])]) },
     { name:"دوم", elevation:6.6, ceiling:3, walls:rect(2.2,2.1,9.3,7.4,3).concat([wall([5.7,2.1],[5.7,7.4],3)]) }
   ];
   floors.forEach(f=>{f.layers={walls:true,rooms:true,mep:true};});
-  const state = { floor:0, view:"plan", tool:"select", selected:null, snap:true, layers:{walls:true,rooms:true,mep:true}, start:null, cursor:null, measure:null, history:[], future:[], snapshots:[], revisions:[], modalAction:null };
+  const state = { floor:0, view:"plan", tool:"select", wallPreset:"plain", selected:null, snap:true, layers:{walls:true,rooms:true,mep:true}, start:null, cursor:null, measure:null, history:[], future:[], snapshots:[], revisions:[], modalAction:null };
   const current = () => floors[state.floor];
   const selected = () => current().walls.find((w) => w.id === state.selected);
   const len = (w) => dist(w.a,w.b);
@@ -287,7 +288,7 @@
       if(dist(p,state.start)<.08){toast("نقطه پایان باید با شروع فاصله داشته باشد.");return;}
       const a=state.start.slice(),b=p.slice(),tool=state.tool;
       if(tool==="wall"){
-        mutate(()=>{const w=wall(a,b,current().ceiling);current().walls.push(w);state.selected=w.id;});
+        mutate(()=>{const preset=wallPresets[state.wallPreset];const w=wall(a,b,current().ceiling,preset.thickness);w.material=preset.material;current().walls.push(w);state.selected=w.id;});
         toast("دیوار ساخته شد؛ طول و ضخامت را می‌توانید تغییر دهید.");
       }else{state.measure={a,b};state.start=null;state.cursor=null;render();toast("طول اندازه‌گیری‌شده: "+fmt(dist(a,b))+" متر (نمونه)");}
     }
@@ -456,7 +457,7 @@
       area:round(roomsFor(f.walls).reduce((a,r)=>a+r.area,0),2),
       wallLength:round(f.walls.reduce((a,w)=>a+len(w),0),2)
     })),
-    getState:()=>({floor:state.floor,view:state.view,tool:state.tool,snap:state.snap,layers:clone(state.layers),
+    getState:()=>({floor:state.floor,view:state.view,tool:state.tool,wallPreset:state.wallPreset,snap:state.snap,layers:clone(state.layers),
       history:state.history.length,revisions:state.revisions.length,snapshots:state.snapshots.length}),
     selectFloor:(index)=>{if(Number.isInteger(index)&&index>=0&&index<floors.length){switchFloor(index);return true;}return false;},
     reset:(demo=true)=>{
@@ -477,6 +478,13 @@
     setCeiling:(index,val)=>{
       if(!floors[index]||!Number.isFinite(val)||val<2||val>9)return false;
       mutate(()=>{floors[index].ceiling=val;floors[index].walls.forEach(w=>{if(w.auto)w.h=val;});});return true;
+    },
+    setWallPreset:(preset)=>{
+      if(!wallPresets[preset])return false;
+      state.wallPreset=preset;
+      const w=selected();
+      if(w&&!w.locked)mutate(()=>{w.t=wallPresets[preset].thickness;w.material=wallPresets[preset].material;});
+      activateTool("wall");return true;
     },
     startTool:(tool)=>{if(["select","wall","offset","measure","quantities","snapshot"].includes(tool))activateTool(tool);},
     changeView:(view)=>{if(["plan","iso","ar"].includes(view))switchView(view);},

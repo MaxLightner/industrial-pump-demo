@@ -111,7 +111,7 @@
   function projectPage(){
     const p=active(),fl=engine.getFloors(),length=fl.reduce((a,f)=>a+f.wallLength,0),area=fl.reduce((a,f)=>a+f.area,0);
     const floorsHtml=fl.map(f=>'<button class="flow-floor-item" data-floor="'+f.index+'"><div class="flow-floor-number">'+num(f.index+1,0)+'</div><div class="flow-floor-text"><strong>طبقه '+esc(f.name)+'</strong><small>تراز '+(f.elevation>=0?"+":"")+num(f.elevation)+' متر · '+num(f.wallCount,0)+' دیوار</small></div><span class="flow-floor-area">'+(f.roomCount?num(f.area)+" m²":"بدون فضای بسته")+'</span><span class="flow-card-chevron">‹</span></button>').join("");
-    return head(p.name,"داشبورد پروژه","projects",'<span class="flow-session-pill">'+(p.type==="demo"?"نمونه آماده":"موقت · بدون ذخیره")+'</span>')+
+    return head(p.name,"داشبورد پروژه","projects",'<button class="flow-button soft compact" data-action="edit-project">'+icon("settings")+' ویرایش پروژه</button>')+
      '<div class="flow-pagebody"><div class="flow-project-hero"><div class="flow-project-hero-art">'+portraitCover+'</div><div class="flow-project-hero-copy"><span class="flow-kicker">PROJECT OVERVIEW</span><h2>'+esc(p.name)+'</h2><p>'+esc(p.description)+'</p><div class="flow-hero-meta">'+icon("clock")+' آخرین فعالیت: '+esc(p.updated)+'</div></div></div>'+
      '<div class="flow-metrics"><div><span>طبقات</span><b>'+num(fl.length,0)+'</b><small>در این پروژه</small></div><div><span>دیوارها</span><b>'+num(fl.reduce((a,f)=>a+f.wallCount,0),0)+'</b><small>قطعه</small></div><div><span>مساحت محورها</span><b>'+num(area)+'</b><small>متر مربع · نمونه</small></div><div><span>طول دیوار</span><b>'+num(length)+'</b><small>متر · نمونه</small></div></div>'+
      '<div class="flow-primary-row"><button class="flow-button primary" data-action="work">'+icon("scan")+' ورود به محیط کار</button><button class="flow-button outlined" data-action="quantities">'+icon("ruler")+' شناسنامه و متره</button></div>'+
@@ -167,6 +167,16 @@
         const id="session-"+projects.length;
         projects.push({id,name,description:$("projectDescription").value.trim()||"پروژه موقت · یک طبقه",type:"session",level:"نمونه",updated:timestamp(),pdfs:{},photos:[],notes:[],markerId:"ARCH-YAR-TEMP-"+id,cache:null});
         activeId=id;engine.reset(false);viewFloor=0;navigate("project");
+      }}
+    ]);
+  }
+  function editProjectSheet(){
+    const p=active();
+    openSheet("مشخصات پروژه", '<label class="flow-input-label">نام پروژه<input id="editProjectName" maxlength="45" value="'+esc(p.name)+'"></label><label class="flow-input-label">توضیح پروژه<input id="editProjectDescription" maxlength="90" value="'+esc(p.description)+'"></label><div class="flow-field-hint" id="editProjectValidation">تغییرات فقط تا بسته شدن این پیش‌نمایش باقی می‌مانند.</div>',[
+      {label:"انصراف",variant:"soft"},
+      {label:"ثبت موقت",handler:()=>{
+        const name=$("editProjectName").value.trim();if(!name){$("editProjectValidation").textContent="نام پروژه لازم است.";return false;}
+        p.name=name;p.description=$("editProjectDescription").value.trim();p.updated=timestamp();navigate("project");
       }}
     ]);
   }
@@ -256,6 +266,7 @@
     if(name==="work"){viewFloor=0;engine.selectFloor(0);navigate("floor");return;}
     if(name==="floor-2d"){editor("plan");return;}
     if(name==="floor-ar"){editor("ar");return;}
+    if(name==="edit-project"){editProjectSheet();return;}
     if(name==="floor-settings"){floorSettingsSheet();return;}
     if(name==="with-marker"||name==="without-marker"){noMarkerSheet(name);return;}
     if(name==="docs"){navigate("docs");return;}

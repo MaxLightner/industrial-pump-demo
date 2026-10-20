@@ -24,6 +24,7 @@
     { name:"اول", elevation:3.3, ceiling:3.1, walls:rect(2.2,2.1,10.7,7.9).concat([wall([6.1,2.1],[6.1,7.9])]) },
     { name:"دوم", elevation:6.6, ceiling:3, walls:rect(2.2,2.1,9.3,7.4,3).concat([wall([5.7,2.1],[5.7,7.4],3)]) }
   ];
+  floors.forEach(f=>{f.layers={walls:true,rooms:true,mep:true};});
   const state = { floor:0, view:"plan", tool:"select", selected:null, snap:true, layers:{walls:true,rooms:true,mep:true}, start:null, cursor:null, measure:null, history:[], future:[], snapshots:[], revisions:[], modalAction:null };
   const current = () => floors[state.floor];
   const selected = () => current().walls.find((w) => w.id === state.selected);
@@ -377,7 +378,7 @@
       });
     });
   }
-  function switchFloor(i){state.floor=i;state.selected=null;state.start=null;state.measure=null;state.tool="select";render();}
+  function switchFloor(i){current().layers=clone(state.layers);state.floor=i;state.layers=clone(current().layers||{walls:true,rooms:true,mep:true});state.selected=null;state.start=null;state.measure=null;state.tool="select";render();}
   function switchView(view){state.view=view;state.start=null;state.cursor=null;state.selected=null;state.tool="select";render();}
   function simpleModal(title,description){modal(title,'<p>'+description+'</p><div class="notice">این بخش هنوز در پیش‌نمایش پیاده‌سازی نشده و عملکرد واقعی Android / AR ندارد.</div>',null,null);}
   function help(){
@@ -436,5 +437,64 @@
     if(e.key==="Delete"&&selected()&&!selected().locked)deleteSelected();
   });
   window.addEventListener("resize",placeContext);
+  const initialDemo = clone(floors);
+  /* Session-only bridge for home, project and floor screens.
+     No persistence, authentication or network calls. */
+  window.ArchyarPreview = Object.freeze({
+    exportSession:()=>clone({floors,history:state.history,future:state.future,snapshots:state.snapshots,revisions:state.revisions,floor:state.floor,layers:state.layers}),
+    importSession:(saved)=>{
+      if(!saved||!Array.isArray(saved.floors)||!saved.floors.length)return false;
+      floors=clone(saved.floors);state.floor=Math.max(0,Math.min(floors.length-1,saved.floor||0));
+      state.layers=clone(saved.layers||floors[state.floor].layers||{walls:true,rooms:true,mep:true});
+      state.history=clone(saved.history||[]);state.future=clone(saved.future||[]);
+      state.snapshots=clone(saved.snapshots||[]);state.revisions=clone(saved.revisions||[]);
+      state.selected=null;state.start=null;state.cursor=null;state.measure=null;state.tool="select";state.view="plan";render();return true;
+    },
+    getFloors: () => floors.map((f,i)=>({
+      index:i,name:f.name,elevation:f.elevation,ceiling:f.ceiling,
+      wallCount:f.walls.length,roomCount:roomsFor(f.walls).length,
+      area:round(roomsFor(f.walls).reduce((a,r)=>a+r.area,0),2),
+      wallLength:round(f.walls.reduce((a,w)=>a+len(w),0),2)
+    })),
+    getState:()=>({floor:state.floor,view:state.view,tool:state.tool,snap:state.snap,layers:clone(state.layers),
+      history:state.history.length,revisions:state.revisions.length,snapshots:state.snapshots.length}),
+    selectFloor:(index)=>{if(Number.isInteger(index)&&index>=0&&index<floors.length){switchFloor(index);return true;}return false;},
+    reset:(demo=true)=>{
+      const template=demo?clone(initialDemo):[{name:"همکف",elevation:0,ceiling:3.1,walls:[]}];
+      floors=template;
+      state.floor=0;state.layers=clone(floors[0].layers||{walls:true,rooms:true,mep:true});state.selected=null;state.start=null;state.cursor=null;state.measure=null;
+      state.tool="select";state.view="plan";state.history=[];state.future=[];
+      state.snapshots=[];state.revisions=[];render();return true;
+    },
+    renameFloor:(index,name)=>{
+      if(!floors[index]||typeof name!=="string"||!name.trim())return false;
+      mutate(()=>{floors[index].name=name.trim().slice(0,32);});return true;
+    },
+    setFloorElevation:(index,val)=>{
+      if(!floors[index]||!Number.isFinite(val)||Math.abs(val)>100)return false;
+      mutate(()=>{floors[index].elevation=val;});return true;
+    },
+    setCeiling:(index,val)=>{
+      if(!floors[index]||!Number.isFinite(val)||val<2||val>9)return false;
+      mutate(()=>{floors[index].ceiling=val;floors[index].walls.forEach(w=>{if(w.auto)w.h=val;});});return true;
+    },
+    startTool:(tool)=>{if(["select","wall","offset","measure","quantities","snapshot"].includes(tool))activateTool(tool);},
+    changeView:(view)=>{if(["plan","iso","ar"].includes(view))switchView(view);},
+    toggleLayer:(layer,enabled)=>{
+      const names={walls:"layerWalls",rooms:"layerRooms",mep:"layerMep"};
+      if(!names[layer])return false;
+      state.layers[layer]=Boolean(enabled);current().layers=clone(state.layers);render();return true;
+    },
+    showQuantities:()=>showQuantities(),
+    showVersions:()=>showVersions(),
+    showHelp:()=>help()
+  });
+  const originalRender=render;
+  render=function(){
+    originalRender();
+    document.dispatchEvent(new CustomEvent("archyar:render",{detail:{
+      floor:state.floor,view:state.view,tool:state.tool
+    }}));
+  };
   render();
 })();

@@ -8,7 +8,7 @@
 <style>
 :root{color-scheme:dark;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;--panel:#131c26;--line:rgba(221,233,244,.14);--sub:#a3b5c6;--bright:#d8e8f3}
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b1016;color:#ecf2f6}button{font:inherit;cursor:pointer}button:focus-visible,.toggle:focus-visible{outline:2px solid #78b8ff;outline-offset:3px}
-#viewport{position:fixed;inset:0;background:radial-gradient(ellipse at 39% 30%,#93aabb 0%,#869bad 30%,#74899c 67%,#657b8d 100%);touch-action:none;overflow:hidden}#viewport canvas{width:100%;height:100%;display:block;touch-action:none}
+#viewport{position:fixed;inset:0;background:radial-gradient(ellipse at 39% 28%,#879dab 0%,#71879a 32%,#5a7184 70%,#455b6f 100%);touch-action:none;overflow:hidden}#viewport canvas{width:100%;height:100%;display:block;touch-action:none}
 #viewport:after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 46% 40%,transparent 43%,rgba(15,30,42,.12) 100%)}
 .topbar{position:absolute;top:0;left:0;right:0;padding:27px clamp(20px,4vw,70px);display:flex;justify-content:space-between;align-items:center;gap:14px;pointer-events:none;z-index:3}.topbar>*{pointer-events:auto}.identity{display:flex;align-items:center;gap:14px}.emblem{display:grid;place-items:center;width:38px;height:38px;border:1px solid #6c8392;color:#d1e8ec;font-size:23px;font-weight:200;transform:rotate(45deg)}.emblem span{transform:rotate(-45deg)}.eyebrow{font-size:10px;letter-spacing:.3em;font-weight:700;color:#8ba1b2}.title{margin:5px 0 0;font-size:clamp(16px,2.1vw,22px);line-height:1.15;letter-spacing:.02em;font-weight:600}.right-info{border:1px solid var(--line);padding:10px 14px;font-size:10px;letter-spacing:.13em;font-weight:600;color:#b3c7d3;background:rgba(8,13,20,.45);backdrop-filter:blur(12px)}
 .toolbar{position:absolute;z-index:4;right:clamp(16px,3vw,46px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px}.tool{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--line);background:rgba(18,28,38,.75);backdrop-filter:blur(16px);color:#e5f1f7;border-radius:7px;font-size:24px;transition:background .2s,border-color .2s}.tool:hover{background:#263747;border-color:#7d9aaa}.tool svg{width:19px;height:19px;stroke:currentColor;stroke-width:1.7;fill:none}
@@ -21,7 +21,7 @@
 </head>
 <body>
 <div id="viewport" aria-label="Interactive stainless steel CAD model"></div>
-<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">MILK POWDER V9 · RESTORED INDUSTRIAL FLOOR</div></header>
+<header class="topbar"><div class="identity"><div class="emblem" aria-hidden="true"><span>◇</span></div><div><div class="eyebrow">INDUSTRIAL / WEBGL</div><h1 class="title">Steel Assembly</h1></div></div><div class="right-info">MILK POWDER V10 · CONTROLLED STUDIO LIGHT</div></header>
 <div class="info" aria-hidden="true"><div class="rail"></div><div class="large">02</div><div class="small">ENGINEERED IN METAL</div></div>
 <div class="toolbar" aria-label="Camera controls"><button class="tool" id="plus" type="button" title="Zoom in" aria-label="Zoom in">+</button><button class="tool" id="minus" type="button" title="Zoom out" aria-label="Zoom out">−</button><button class="tool" id="reset" type="button" title="Reset view" aria-label="Reset view"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 3-6M4 4v5h5"/></svg></button><button class="tool" id="fullscreen" type="button" title="Fullscreen" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/></svg></button></div>
 <footer class="bottom"><div class="spec"><strong>STAINLESS STEEL · STUDIO FINISH</strong><div id="meshCount">Drag to orbit · Scroll to zoom</div></div><div class="controls"><div class="switchline"><button id="ao" class="toggle" type="button" role="switch" aria-checked="false" aria-label="Ambient occlusion"></button><span>Ambient occlusion</span></div><div class="divider"></div><button id="spin" class="action" type="button" aria-pressed="false">Auto rotate</button></div></footer>
@@ -36,11 +36,11 @@ const scene=new THREE.Scene();scene.background=null;
 const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});renderer.setClearColor(0x000000,0);
 renderer.setPixelRatio(Math.min(devicePixelRatio,window.innerWidth<700?1.5:2));
 renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.62;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.toneMappingExposure=1.44;renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 viewport.appendChild(renderer.domElement);
 const camera=new THREE.PerspectiveCamera(34,1,.01,1000);
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.055;controls.minPolarAngle=.12;controls.maxPolarAngle=Math.PI-.12;controls.screenSpacePanning=true;
-scene.add(new THREE.AmbientLight(0xf6fbff,.43));
+scene.add(new THREE.AmbientLight(0xf6fbff,.27));
 const modelGroup=new THREE.Group();scene.add(modelGroup);
 function makeDiamondPlateTextures(){
  const size=256, step=32;
@@ -82,15 +82,16 @@ function studioEnvironment(){
  const pmrem=new THREE.PMREMGenerator(renderer);pmrem.compileCubemapShader();const tex=pmrem.fromScene(studio,.035,.1,40).texture;pmrem.dispose();
  studio.traverse(x=>{if(x.isMesh){x.geometry.dispose();x.material.dispose();}});return tex;
 }
-let envTexture=studioEnvironment();scene.environment=envTexture;scene.environmentIntensity=2.6;
-const key=new THREE.DirectionalLight(0xf7faff,4.4);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.bias=-.00015;key.shadow.normalBias=.015;key.shadow.radius=3;scene.add(key);
-const fill=new THREE.DirectionalLight(0xd9ebff,3.25);fill.position.set(8,3,-3);scene.add(fill);
-const rim=new THREE.DirectionalLight(0xffffff,2.35);rim.position.set(2,8,-9);scene.add(rim);
+let envTexture=studioEnvironment();scene.environment=envTexture;scene.environmentIntensity=1.95;
+const key=new THREE.DirectionalLight(0xf7faff,3.55);key.position.set(-5,10,7);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.bias=-.00015;key.shadow.normalBias=.015;key.shadow.radius=3;scene.add(key);
+const fill=new THREE.DirectionalLight(0xd9ebff,2.25);fill.position.set(8,3,-3);scene.add(fill);
+const rim=new THREE.DirectionalLight(0xffffff,1.75);rim.position.set(2,8,-9);scene.add(rim);
 function transparentPlastic(){
  return new THREE.MeshPhysicalMaterial({color:0xc6eaf7,metalness:0,roughness:.055,transmission:0,transparent:true,opacity:.34,depthWrite:false,depthTest:true,ior:1.49,clearcoat:1,clearcoatRoughness:.035,envMapIntensity:1.65,side:THREE.DoubleSide});
 }
 function polishedRailMaterial(){return new THREE.MeshPhysicalMaterial({color:0xf1f6f8,metalness:1,roughness:.08,envMapIntensity:2.35,clearcoat:.28,clearcoatRoughness:.08});}
-function trayPlateMaterial(){return new THREE.MeshStandardMaterial({map:plateMaps.color,normalMap:plateMaps.normal,normalScale:new THREE.Vector2(.70,.70),roughnessMap:plateMaps.rough,roughness:.56,metalness:.68,envMapIntensity:1.45,color:0xe9f0f3,side:THREE.DoubleSide,depthWrite:true,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-2});}
+function trayPlateMaterial(){return new THREE.MeshStandardMaterial({map:plateMaps.color,normalMap:plateMaps.normal,normalScale:new THREE.Vector2(.82,.82),roughnessMap:plateMaps.rough,roughness:.8,metalness:.28,envMapIntensity:.9,color:0x95a6b3,side:THREE.DoubleSide,depthWrite:true,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-2});}
+function hopperMaterial(){return new THREE.MeshPhysicalMaterial({color:0xd6e1e8,metalness:.78,roughness:.37,envMapIntensity:1.3,clearcoat:.12,clearcoatRoughness:.3,side:THREE.DoubleSide});}
 function makeDeckOnExistingBase(){
  const m=trayPlateMaterial();
  const geom=new THREE.PlaneGeometry(1,1,1,1);
@@ -150,6 +151,7 @@ function createMaterial(mesh){
   return new THREE.MeshPhysicalMaterial({color:0x1c242b,metalness:.4,roughness:.32,clearcoat:.35,clearcoatRoughness:.22});
  }
  if(n.includes('newobject010')){buildTrayUV(mesh);return trayPlateMaterial();}
+ if(n==='newobject001'||n==='newobject068')return hopperMaterial();
  if(n.startsWith('newobject')||n==='untitled')return polishedRailMaterial();
  return defaultMetal(name);
 }
@@ -201,7 +203,7 @@ function buildProcessVisuals(){
   const b=new THREE.Box3().setFromObject(tube),d=b.getSize(new THREE.Vector3());
   addPowderParticles(b,Math.min(d.x,d.z)*.24,window.innerWidth<700?700:1000);
  }
- el('meshCount').textContent='MILK POWDER V9 · powder speed 5x · industrial deck restored · '+tubes.length+' clear tubes · '+tanks.length+' tanks';
+ el('meshCount').textContent='MILK POWDER V10 · powder speed 5x · industrial deck restored · '+tubes.length+' clear tubes · '+tanks.length+' tanks';
 }
 const POWDER_SPEED_MULTIPLIER=5;
 function updatePowder(_dt,time){
@@ -277,7 +279,7 @@ function loadUrl(url){status.hidden=false;status.querySelector('strong').textCon
 async function loadPacked(){
  status.hidden=false;status.querySelector('strong').textContent='PREPARING 3D SCENE';msg.textContent='Loading compressed CAD assembly...';el('progress').hidden=false;el('localUpload').hidden=true;
  try {
-  const response=await fetch('./assembly_styled.glb.gz?v=9');
+  const response=await fetch('./assembly_styled.glb.gz?v=10');
   if(!response.ok)throw Error('CAD download failed (HTTP '+response.status+')');
   let bytes=await response.arrayBuffer();
   const magic=new Uint8Array(bytes);
